@@ -41,8 +41,13 @@ class ViewController: UIViewController {
                 let busTimer = try JSONDecoder().decode(Direction.self, from: data)
 //                print(busTimer)
 //                print(busTimer.shosfc)
-                print("Sho->SFC, Weekday: ",busTimer.shosfc?[0].weekday)
-                print("Sho->SFC, Saturday: ",busTimer.shosfc?[1].sat)
+//                print("Sho->SFC, Weekday: ", busTimer.shosfc?[0].weekday)
+                print("Sho->SFC, Saturday: ", busTimer.shosfc?[1].sat)
+                print(busTimer.shosfc?[1].sat?[0])
+                print((busTimer.shosfc?[1].sat?[0].h)!) // ! gets rid of the Optional. () to wrap.
+                let busMin = (busTimer.shosfc?[1].sat?[0].m)!
+                print(busMin)
+                print((busTimer.shosfc?[1].sat?[0].type)!)
                 
                 //write functions to get busNum, get hh, mm etc?
                 
