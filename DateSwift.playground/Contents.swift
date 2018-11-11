@@ -19,9 +19,12 @@ dateFormatter.string(from: date) //2018年10月14日 日曜日 23時57分58秒 �
 dateFormatter.timeZone = TimeZone(abbreviation: "JST")
 dateFormatter.string(from: date)
 
+let dayOfWeek = calendar.component(.weekday, from: date)
+print(dateFormatter.shortWeekdaySymbols)
 
 // Printing every second
 
+//1st way
 //for _ in 1...10
 //{
 //    date = Date()
@@ -29,12 +32,17 @@ dateFormatter.string(from: date)
 //    sleep(1)
 //}
 
-let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-    date = Date()
-    let result = "Now is " + dateFormatter.string(from: date)
-    print(result)
-}
+// 2nd way
+//let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+//    date = Date()
+//    let result = "Now is " + dateFormatter.string(from: date)
+//    print(result)
+//}
 
 
 //let dirs = NSSearchPathForDirectoriesInDomains(.documentDirectory,                                               .userDomainMask, true)
 
+
+
+let aString = "2018/11/11"
+let newString = aString.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
