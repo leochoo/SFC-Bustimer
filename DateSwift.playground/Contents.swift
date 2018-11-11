@@ -10,22 +10,15 @@ let hour = calendar.component(.hour, from: date)
 let minute = calendar.component(.minute, from: date)
 let second = calendar.component(.second, from: date)
 
-
 let dateFormatter = DateFormatter()
-
-dateFormatter.dateStyle = .medium
-dateFormatter.timeStyle = .none
+dateFormatter.dateStyle = .full
+dateFormatter.timeStyle = .full
 dateFormatter.locale = Locale(identifier: "ja_JP")
 dateFormatter.string(from: date) //2018年10月14日 日曜日 23時57分58秒 日本標準時
 
 dateFormatter.timeZone = TimeZone(abbreviation: "JST")
 dateFormatter.string(from: date)
 
-print(dateFormatter.string(from: date))
-
-
-let dayOfWeek = calendar.component(.weekday, from: date)
-print(dateFormatter.shortWeekdaySymbols[dayOfWeek-1])
 
 // Printing every second
 
@@ -36,11 +29,11 @@ print(dateFormatter.shortWeekdaySymbols[dayOfWeek-1])
 //    sleep(1)
 //}
 
-//let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-//    date = Date()
-//    let result = "Now is " + dateFormatter.string(from: date)
-//    print(result)
-//}
+let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+    date = Date()
+    let result = "Now is " + dateFormatter.string(from: date)
+    print(result)
+}
 
 
 //let dirs = NSSearchPathForDirectoriesInDomains(.documentDirectory,                                               .userDomainMask, true)
