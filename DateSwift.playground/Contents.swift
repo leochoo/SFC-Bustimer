@@ -1,6 +1,8 @@
 import UIKit
 
 // Date and Time
+
+// Get current time
 var date = Date()
 let calendar = Calendar.current
 
@@ -10,6 +12,7 @@ let hour = calendar.component(.hour, from: date)
 let minute = calendar.component(.minute, from: date)
 let second = calendar.component(.second, from: date)
 
+// Printing in Japanese style
 let dateFormatter = DateFormatter()
 dateFormatter.dateStyle = .full
 dateFormatter.timeStyle = .full
@@ -21,6 +24,25 @@ dateFormatter.string(from: date)
 
 let dayOfWeek = calendar.component(.weekday, from: date)
 print(dateFormatter.shortWeekdaySymbols)
+
+// Printing data in another format
+dateFormatter.dateFormat = "yyyy/MM/dd"
+dateFormatter.string(from: date)
+
+// String to Date time object
+let addedDate = "2018/12/18"
+dateFormatter.dateFormat = "yyyy/MM/dd"
+let date1 = dateFormatter.date(from: addedDate)
+// print function will print this thing in UTC time...
+//print("DATE \(date1)")
+
+let addedDate2 = "2018/12/18 07:30"
+dateFormatter.dateFormat = "yyyy/MM/dd hh:mm"
+let date2 = dateFormatter.date(from: addedDate2)
+
+// print function will print this thing in UTC time...
+//print("Time \(date2)")
+
 
 // Printing every second
 
@@ -44,5 +66,6 @@ print(dateFormatter.shortWeekdaySymbols)
 
 
 
-let aString = "2018/11/11"
-let newString = aString.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
+// Print day of the week in Japanese Kanji
+//let aString = "2018/11/11"
+//let newString = aString.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
