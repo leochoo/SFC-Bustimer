@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7485B32D7BDF8CEA33E6DD0D /* Pods_BusTimerJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B7AE5F916FF72C69531404 /* Pods_BusTimerJSON.framework */; };
 		D755CA9A218448F10069FDE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755CA99218448F10069FDE3 /* AppDelegate.swift */; };
 		D755CA9C218448F10069FDE3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755CA9B218448F10069FDE3 /* ViewController.swift */; };
 		D755CA9F218448F10069FDE3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D755CA9D218448F10069FDE3 /* Main.storyboard */; };
@@ -16,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		627335DB332739D98C23468B /* Pods-BusTimerJSON.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BusTimerJSON.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BusTimerJSON/Pods-BusTimerJSON.debug.xcconfig"; sourceTree = "<group>"; };
+		B5B7AE5F916FF72C69531404 /* Pods_BusTimerJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BusTimerJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D755CA96218448F10069FDE3 /* BusTimerJSON.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusTimerJSON.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D755CA99218448F10069FDE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D755CA9B218448F10069FDE3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +27,8 @@
 		D755CAA3218448F30069FDE3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D755CAA6218448F30069FDE3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D755CAA8218448F30069FDE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D7A852F321E103D20055030E /* SwifyJSON.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = SwifyJSON.playground; path = "/Users/leonard/Desktop/dev/ios-sfcbustimer/SwifyJSON.playground"; sourceTree = "<absolute>"; };
+		F01FFEB13C87228D516E8A36 /* Pods-BusTimerJSON.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BusTimerJSON.release.xcconfig"; path = "Pods/Target Support Files/Pods-BusTimerJSON/Pods-BusTimerJSON.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +36,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7485B32D7BDF8CEA33E6DD0D /* Pods_BusTimerJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9B26CBEDEF9ECFD4B46D37A6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				627335DB332739D98C23468B /* Pods-BusTimerJSON.debug.xcconfig */,
+				F01FFEB13C87228D516E8A36 /* Pods-BusTimerJSON.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		D755CA8D218448F10069FDE3 = {
 			isa = PBXGroup;
 			children = (
 				D755CA98218448F10069FDE3 /* BusTimerJSON */,
 				D755CA97218448F10069FDE3 /* Products */,
+				9B26CBEDEF9ECFD4B46D37A6 /* Pods */,
+				F8A7B2723F015F89076F258D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +84,15 @@
 			path = BusTimerJSON;
 			sourceTree = "<group>";
 		};
+		F8A7B2723F015F89076F258D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D7A852F321E103D20055030E /* SwifyJSON.playground */,
+				B5B7AE5F916FF72C69531404 /* Pods_BusTimerJSON.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +100,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D755CAAB218448F30069FDE3 /* Build configuration list for PBXNativeTarget "BusTimerJSON" */;
 			buildPhases = (
+				28CAEE7A41C6E687ED1EA62F /* [CP] Check Pods Manifest.lock */,
 				D755CA92218448F10069FDE3 /* Sources */,
 				D755CA93218448F10069FDE3 /* Frameworks */,
 				D755CA94218448F10069FDE3 /* Resources */,
+				45F939C32D5F832D46D8D60B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -132,6 +160,53 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		28CAEE7A41C6E687ED1EA62F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BusTimerJSON-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		45F939C32D5F832D46D8D60B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BusTimerJSON/Pods-BusTimerJSON-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BusTimerJSON/Pods-BusTimerJSON-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D755CA92218448F10069FDE3 /* Sources */ = {
@@ -284,6 +359,7 @@
 		};
 		D755CAAC218448F30069FDE3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 627335DB332739D98C23468B /* Pods-BusTimerJSON.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -301,6 +377,7 @@
 		};
 		D755CAAD218448F30069FDE3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F01FFEB13C87228D516E8A36 /* Pods-BusTimerJSON.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
