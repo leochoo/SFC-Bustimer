@@ -1,3 +1,4 @@
+//
 //  ViewController.swift
 //  BusTimerJSON
 //
@@ -5,7 +6,6 @@
 //  Copyright © 2018 team-sfcbustimer. All rights reserved.
 //
 import UIKit
-import SwiftyJSON
 
 struct Direction: Decodable{
     let shosfc: [Day]?
@@ -40,7 +40,7 @@ func getDateForHoliday() -> String{
     dateFormatter.locale = Locale(identifier: "ja_JP")
     dateFormatter.timeZone = TimeZone(abbreviation: "JST")
     let today = dateFormatter.string(from: date)
-    //    print("getDate:",today)
+//    print("getDate:",today)
     return today //return 2019/01/05   (yyyy/MM/dd)
 }
 
@@ -66,7 +66,7 @@ func getDateTime() -> String{
     dateFormatter.locale = Locale(identifier: "ja_JP")
     dateFormatter.timeZone = TimeZone(abbreviation: "JST")
     let today = dateFormatter.string(from: date)
-    //    print("getDateTime:",today)
+//    print("getDateTime:",today)
     return today //return 2019/01/05 1:14   (yyyy/M/dd H:mm)
 }
 
@@ -74,7 +74,7 @@ func getToday() -> Int{
     let date = Date()
     let calendar = Calendar.current
     let weekday = calendar.component(.weekday, from: date)
-    //    print("Weekday \(weekday)") // 1, 2, 3, .... 2 is Monday
+//    print("Weekday \(weekday)") // 1, 2, 3, .... 2 is Monday
     return weekday
 }
 
@@ -90,12 +90,12 @@ func isHoliday(today:String, holidays:[String]) -> Bool {
 
 
 func strToDate(str:String)-> Date?{
-    //    print("str",str)
+//    print("str",str)
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy/MM/dd H:mm"
-    //    dateFormatter.locale = Locale(identifier: "en_US_POSIX") //王道パターン
+//    dateFormatter.locale = Locale(identifier: "en_US_POSIX") //王道パターン
     let date = dateFormatter.date(from: str)
-    //    print(dateFormatter.string(from: date!)) //値自体は変わらない
+//    print(dateFormatter.string(from: date!)) //値自体は変わらない
     return date
 }
 
@@ -119,12 +119,12 @@ class ViewController: UIViewController {
         
         URLSession.shared.dataTask(with: url) { (data, response, err) in
             guard let data = data else { return }
-            
             do {
-                let json = try JSON(data: data)
-                let arrayKeys = Array(json.dictionaryValue.keys)
-                //                // check whether today is weekday, sat, or holiday
-                identifyDay(today: today, holidays: arrayKeys)
+                let response = try JSONDecoder().decode([String: String].self, from: data)
+                let keys = Array(response.keys)
+                
+                // check whether today is weekday, sat, or holiday
+                identifyDay(today: today, holidays: keys)
                 
             } catch let jsonErr {
                 print("Error serializing json:", jsonErr)
@@ -132,44 +132,36 @@ class ViewController: UIViewController {
             
             }.resume()
         
-        
         // Finding The Next Bus
         let jsonUrlString2 = "https://api.myjson.com/bins/6ij3g" //正しいデータ
         guard let url2 = URL(string: jsonUrlString2) else {return}
         URLSession.shared.dataTask(with: url2) { (data, response, err) in
             guard let data = data else { return }
+            //         let dataAsString = String(data: data, encoding: .utf8)
+            //            print(dataAsString)
             do {
-                let json = try JSON(data: data)
-//                print(json["shosfc"][0]["weekday"])
-                
-//                // Test main logic with sample user inputs
-                let userDirection = "shosfc"
-                let userWeek = "weekday"
-                let currUserTime = Date()
-                
-                let busList = json[userDirection][0][userWeek]
-//                print(json[userDirection][0][userWeek])
-//                for bus in busList.arrayValue{
-//                    print("\(bus["hour"].intValue):\(bus["min"].intValue)")
-//                }
-                
+                let busTimer = try JSONDecoder().decode(Direction.self, from: data)
+//                print(busTimer)
+//                let bus = busTimer.shosfc?[0].weekday?[0]
 
-                //direction
+                 // Test main logic with sample user inputs
+                 let userDirection = "shosfc"
+                 let userWeek = "weekday"
+                 let currUserTime = Date()
+                
+                // try implementing CocoaPods here after you come back
+
+                 //direction
                 if(userDirection == "shosfc"){
                     if(userWeek == "weekday"){
                         // list of weekday buses
-                        let busList = json[userDirection][0][userWeek]
-                        for bus in busList.arrayValue{
-                            // get today's date 2019/01/11
+                        let busList = busTimer.shosfc?[0].weekday
+                        for bus in busList!{
                             let dateFormatter = DateFormatter()
                             dateFormatter.dateFormat = "yyyy/MM/dd"
                             let currDateOnly = dateFormatter.string(from: currUserTime)
-                            // append today's date to the bus hour and bus minute
-                            // 2019/01/11 09:25
-                            let busTimeStr = "\(currDateOnly) \(bus["hour"].intValue):\(bus["min"].intValue)"
-                            // convert string to dateTime object
+                            let busTimeStr = "\(currDateOnly) \((bus.hour)!):\((bus.min)!)"
                             let busTimeObj = strToDate(str:busTimeStr)
-                            // find the next bus
                             if busTimeObj! > currUserTime{
                                 print("Found next bus at",dateToStr(dateObj: busTimeObj))
                                 break
@@ -177,14 +169,14 @@ class ViewController: UIViewController {
                         }
                     }
                 }
-
                 
+
             } catch let jsonErr {
                 print("Error serializing json:", jsonErr)
             }
-            
-            }.resume()
-        
+
+        }.resume()
+    
     }
     
     
