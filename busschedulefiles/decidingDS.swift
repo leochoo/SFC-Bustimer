@@ -14,7 +14,7 @@ let userWeek = "weekday"
 let currentTime = Date()
 
 if (条件){
-	let busSchedule = json[userDirection][0][userWeek][ロータリー]
+    let busSchedule = json[userDirection][0][userWeek][ロータリー]
 }
 
 

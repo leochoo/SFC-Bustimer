@@ -7,61 +7,7 @@
 import UIKit
 import SwiftyJSON
 
-struct Direction: Decodable{
-	let shosfc: [Day]?
-	let shosfc_t: [Day]?
-	let tsujisfc: [Day]?
-	let tsujisfc_t: [Day]?
-	let sfcsho: [Day]?
-	let sfcsho_t: [Day]?
-	let sfcsho_tyokkou: [Day]?
-	let sfctsuji: [Day]?
-	let sfctsuji_t: [Day]?
-}
-
-struct Day: Decodable{
-	let weekday: [Bus]?
-	let sat: [Bus]?
-	let sun: [Bus]?
-}
-
-struct Bus: Decodable{
-	let hour: Int?
-	let min: Int?
-	let type: String?
-}
-
-//used for Holiday identification, return only date as string
-func getDateForHoliday() -> String{
-	let date = Date()
-	let dateFormatter = DateFormatter()
-	dateFormatter.dateStyle = .medium
-	dateFormatter.timeStyle = .none
-	dateFormatter.locale = Locale(identifier: "ja_JP")
-	dateFormatter.timeZone = TimeZone(abbreviation: "JST")
-	let today = dateFormatter.string(from: date)
-	//    print("getDate:",today)
-	return today //return 2019/01/05   (yyyy/MM/dd)
-}
-
-func identifyDay(today:String, holidays:[String]) -> String{
-	let weekday = getToday()
-	if(isHoliday(today: today, holidays: holidays)){
-		print("Holiday スケジュール")
-		return "holiday"
-	} else if(weekday == 1){
-		print("Sunday スケジュール")
-		return "holiday"
-	} else if(weekday == 7){
-		print("Saturday スケジュール")
-		return "saturday"
-	} else {
-		print("Weekday スケジュール")
-		return "weekday"
-	}
-}
-
-//return date and time as string
+//return date time info as string (yyyy/M/dd H:mm)
 func getDateTime() -> String{
 	let date = Date()
 	let dateFormatter = DateFormatter()
@@ -71,15 +17,26 @@ func getDateTime() -> String{
 	dateFormatter.timeZone = TimeZone(abbreviation: "JST")
 	let today = dateFormatter.string(from: date)
 	//    print("getDateTime:",today)
-	return today //return 2019/01/05 1:14   (yyyy/M/dd H:mm)
+	return today //return 2019/01/05 1:14
 }
 
-func getToday() -> Int{
-	let date = Date()
-	let calendar = Calendar.current
-	let weekday = calendar.component(.weekday, from: date)
-	//    print("Weekday \(weekday)") // 1, 2, 3, .... 2 is Monday
-	return weekday
+func identifyDayType(today:String, holidays:[String]) -> String{
+	let dayOfWeek = getDayOfWeek()
+	if(isHoliday(today: today, holidays: holidays)){
+		print("Holiday スケジュール")
+//        return "holiday"
+		return "sun"
+	} else if(dayOfWeek == 1){
+		print("Sunday スケジュール")
+		return "sun"
+	} else if(dayOfWeek == 7){
+		print("Saturday スケジュール")
+		return "sat"
+//        return "saturday"
+	} else {
+		print("Weekday スケジュール")
+		return "weekday"
+	}
 }
 
 func isHoliday(today:String, holidays:[String]) -> Bool {
@@ -92,6 +49,13 @@ func isHoliday(today:String, holidays:[String]) -> Bool {
 	return result
 }
 
+func getDayOfWeek() -> Int{
+	let date = Date()
+	let calendar = Calendar.current
+	let dayOfWeek = calendar.component(.weekday, from: date)
+	//    print("Weekday \(weekday)") // 1, 2, 3, .... 2 is Monday
+	return dayOfWeek
+}
 
 func strToDate(str:String)-> Date?{
 	//    print("str",str)
@@ -114,65 +78,61 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		//Check Holiday
-		var today = getDateForHoliday()
-		// match for formatting of holiday with api data
-		today = today.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
+		// User inputs
+		var userDirection = "shosfc"
+		var userWeek = ""
+		let currUserTime = Date()
+		
+		// Get value for userWeek: weekday, saturday or holiday
 		let jsonUrlString = "https://holidays-jp.github.io/api/v1/date.json"
 		guard let url = URL(string: jsonUrlString) else {return}
-		
 		URLSession.shared.dataTask(with: url) { (data, response, err) in
 			guard let data = data else { return }
-			
 			do {
 				let json = try JSON(data: data)
 				let arrayKeys = Array(json.dictionaryValue.keys)
-				//                // check whether today is weekday, sat, or holiday
-				identifyDay(today: today, holidays: arrayKeys)
+				// get today in a format comparable
+				var todayFormatted = getDateTime()
+				todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
+				// Identify if today is weekday, saturday or holiday
+				userWeek = identifyDayType(today: todayFormatted, holidays: arrayKeys)
 				
 			} catch let jsonErr {
 				print("Error serializing json:", jsonErr)
 			}
-			
-			}.resume()
+		}.resume()
 		
 		
-		// Finding The Next Bus
+		// Get next bus information
 		let jsonUrlString2 = "https://api.myjson.com/bins/6ij3g" //正しいデータ
 		guard let url2 = URL(string: jsonUrlString2) else {return}
 		URLSession.shared.dataTask(with: url2) { (data, response, err) in
 			guard let data = data else { return }
 			do {
 				let json = try JSON(data: data)
-//                print(json["shosfc"][0]["weekday"])
-				
-//                // Test main logic with sample user inputs
-				let userDirection = "shosfc"
-				let userWeek = "weekday"
-				let currUserTime = Date()
 				
 				// list of weekday buses
 				let busSchedule = json[userDirection][0][userWeek].arrayValue
 				
+				// 1/12 Switch to the below statement later
+//                let busSchedule = json[userDirection][0][userWeek].arrayValue
+				
 				// check if the last bus has left
 				let lastBus = busSchedule.last!
-                print(lastBus)
-				// get today's date 2019/01/11
 				let dateFormatter = DateFormatter()
 				dateFormatter.dateFormat = "yyyy/MM/dd"
+				// ex: 2019/01/11
 				let currDateOnly = dateFormatter.string(from: currUserTime)
-                // append today's date to the bus hour and bus minute
-                // 2019/01/11 09:25
+				// currDateOnly + busHour:busMin   ex: 2019/01/11 09:25
 				let lastBusStr = "\(currDateOnly) \(lastBus["hour"].intValue):\(lastBus["min"].intValue)"
 				// convert string to dateTime object
 				let lastBusObj = strToDate(str:lastBusStr)
-                
 				// Compare
 				if lastBusObj! < currUserTime{
 					print("Last bus has left!")
-                    
+					
 				}
-                else{
+				else{
 					// Find the next bus
 					for bus in busSchedule{
 						let busTimeStr = "\(currDateOnly) \(bus["hour"].intValue):\(bus["min"].intValue)"
@@ -184,10 +144,7 @@ class ViewController: UIViewController {
 							break
 						}
 					}
-                }
-				
-				
-
+				}
 				
 			} catch let jsonErr {
 				print("Error serializing json:", jsonErr)
