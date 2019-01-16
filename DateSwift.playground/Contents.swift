@@ -55,11 +55,11 @@ let date2 = dateFormatter.date(from: addedDate2)
 //}
 
 // 2nd way
-//let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-//    date = Date()
-//    let result = "Now is " + dateFormatter.string(from: date)
-//    print(result)
-//}
+let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+    date = Date()
+    let result = "Now is " + dateFormatter.string(from: date)
+    print(result)
+}
 
 
 //let dirs = NSSearchPathForDirectoriesInDomains(.documentDirectory,                                               .userDomainMask, true)

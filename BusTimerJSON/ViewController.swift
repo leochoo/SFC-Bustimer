@@ -12,12 +12,12 @@ func getDateTime() -> String{
 	let date = Date()
 	let dateFormatter = DateFormatter()
 	dateFormatter.dateStyle = .medium
-	dateFormatter.timeStyle = .short
+	dateFormatter.timeStyle = .none
 	dateFormatter.locale = Locale(identifier: "ja_JP")
 	dateFormatter.timeZone = TimeZone(abbreviation: "JST")
 	let today = dateFormatter.string(from: date)
 	//    print("getDateTime:",today)
-	return today //return 2019/01/05 1:14
+	return today //return 2019/01/05
 }
 
 func identifyDayType(today:String, holidays:[String]) -> String{
@@ -74,83 +74,121 @@ func dateToStr(dateObj: Date?) -> String{
 }
 
 
+
+func main( callback: @escaping (JSON?)->() ){
+    // User inputs
+    var userDirection = "sfcsho"
+    var userWeek = ""
+    let currUserTime = Date()
+    var _nextBus: JSON? = nil
+    
+    // Get value for userWeek: weekday, saturday or holiday
+    let jsonUrlString = "https://holidays-jp.github.io/api/v1/date.json"
+    guard let url = URL(string: jsonUrlString) else {return}
+    URLSession.shared.dataTask(with: url) { (data, response, err) in
+        guard let data = data else { return }
+        do {
+            let json = try JSON(data: data)
+            let arrayKeys = Array(json.dictionaryValue.keys)
+            // get today in a format comparable
+            var todayFormatted = getDateTime()
+            print(todayFormatted)
+            todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
+            // Identify if today is weekday, saturday or holiday
+            userWeek = identifyDayType(today: todayFormatted, holidays: arrayKeys)
+
+            
+	        // 2nd url session
+	        // Get next bus information
+		    let jsonUrlString2 = "https://api.myjson.com/bins/gd65c" //1/14/2019 data
+		    guard let url2 = URL(string: jsonUrlString2) else {return}
+		    URLSession.shared.dataTask(with: url2) { (data, response, err) in
+		        guard let data = data else { return }
+		        do {
+		            let json = try JSON(data: data)
+		            
+		            // list of weekday buses
+		            let busSchedule = json[userDirection][userWeek].arrayValue
+		            
+		            // check if the last bus has left
+		            let lastBus = busSchedule.last!
+		            let dateFormatter = DateFormatter()
+		            dateFormatter.dateFormat = "yyyy/MM/dd"
+		            // ex: 2019/01/11
+		            let currDateOnly = dateFormatter.string(from: currUserTime)
+		            // currDateOnly + busHour:busMin   ex: 2019/01/11 09:25
+		            let lastBusStr = "\(currDateOnly) \(lastBus["hour"].intValue):\(lastBus["min"].intValue)"
+		            // convert string to dateTime object
+		            let lastBusObj = strToDate(str:lastBusStr)
+		            // Compare
+		            if lastBusObj! < currUserTime{
+		                print("Last bus has left!")
+		            }
+		            else{
+		                // Find the next bus
+		                for bus in busSchedule{
+		                    let busTimeStr = "\(currDateOnly) \(bus["hour"].intValue):\(bus["min"].intValue)"
+		                    // convert string to dateTime object
+		                    let busTimeObj = strToDate(str:busTimeStr)
+		                    // Compare
+		                    if busTimeObj! > currUserTime{
+		                        print("Found next bus at",dateToStr(dateObj: busTimeObj))
+		                        _nextBus = bus
+		                        break
+		                    }
+		                }
+		            }
+
+//                    print("1 \(_nextBus)")
+				    callback(_nextBus)
+
+		        } catch let jsonErr {
+		            print("Error serializing json:", jsonErr)
+		        }
+		        
+		        }.resume() //end of 2nd url session
+
+       
+        } catch let jsonErr {
+            print("Error serializing json:", jsonErr)
+        }
+        }.resume()  // end of 1st urlsession    
+    
+    
+    
+    
+    
+}
+
+
 class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		// User inputs
-		var userDirection = "shosfc"
-		var userWeek = ""
-		let currUserTime = Date()
-		
-		// Get value for userWeek: weekday, saturday or holiday
-		let jsonUrlString = "https://holidays-jp.github.io/api/v1/date.json"
-		guard let url = URL(string: jsonUrlString) else {return}
-		URLSession.shared.dataTask(with: url) { (data, response, err) in
-			guard let data = data else { return }
-			do {
-				let json = try JSON(data: data)
-				let arrayKeys = Array(json.dictionaryValue.keys)
-				// get today in a format comparable
-				var todayFormatted = getDateTime()
-				todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
-				// Identify if today is weekday, saturday or holiday
-				userWeek = identifyDayType(today: todayFormatted, holidays: arrayKeys)
-				
-			} catch let jsonErr {
-				print("Error serializing json:", jsonErr)
-			}
-		}.resume()
-		
-		
-		// Get next bus information
-		let jsonUrlString2 = "https://api.myjson.com/bins/6ij3g" //正しいデータ
-		guard let url2 = URL(string: jsonUrlString2) else {return}
-		URLSession.shared.dataTask(with: url2) { (data, response, err) in
-			guard let data = data else { return }
-			do {
-				let json = try JSON(data: data)
-				
-				// list of weekday buses
-				let busSchedule = json[userDirection][0][userWeek].arrayValue
-				
-				// 1/12 Switch to the below statement later
-//                let busSchedule = json[userDirection][0][userWeek].arrayValue
-				
-				// check if the last bus has left
-				let lastBus = busSchedule.last!
-				let dateFormatter = DateFormatter()
-				dateFormatter.dateFormat = "yyyy/MM/dd"
-				// ex: 2019/01/11
-				let currDateOnly = dateFormatter.string(from: currUserTime)
-				// currDateOnly + busHour:busMin   ex: 2019/01/11 09:25
-				let lastBusStr = "\(currDateOnly) \(lastBus["hour"].intValue):\(lastBus["min"].intValue)"
-				// convert string to dateTime object
-				let lastBusObj = strToDate(str:lastBusStr)
-				// Compare
-				if lastBusObj! < currUserTime{
-					print("Last bus has left!")
-					
-				}
-				else{
-					// Find the next bus
-					for bus in busSchedule{
-						let busTimeStr = "\(currDateOnly) \(bus["hour"].intValue):\(bus["min"].intValue)"
-						// convert string to dateTime object
-						let busTimeObj = strToDate(str:busTimeStr)
-						// Compare
-						if busTimeObj! > currUserTime{
-							print("Found next bus at",dateToStr(dateObj: busTimeObj))
-							break
-						}
-					}
-				}
-				
-			} catch let jsonErr {
-				print("Error serializing json:", jsonErr)
-			}
-			
-			}.resume()
+//
+//        let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+//
+//            let nextBus = main()
+//            if nextBus == nil{
+//                print("No BUS")
+//            } else{
+//                print(nextBus!)
+//            }
+//        }
+//
+
+
+        main() { (nextBus) -> () in
+//            print("2 \(nextBus)")
+            if nextBus == nil{
+                print("No BUS")
+            } else{
+                print("The next bus is")
+                print(nextBus!)
+            }
+        }
+        
+    
+        
 		
 	}
 	
