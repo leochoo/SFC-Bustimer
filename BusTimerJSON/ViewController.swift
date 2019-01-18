@@ -7,8 +7,8 @@
 import UIKit
 import SwiftyJSON
 
-// global variables
-let currUserTime = Date()
+// global variable -> this is updated in two cases: when main() is called and when updateTimeLeft() is called
+var currUserTime = Date()
 
 //return date time info as string (yyyy/M/dd H:mm)
 func getDateTime() -> String{
@@ -89,11 +89,13 @@ func jsonToDateObj(jsonObj: JSON?) -> Date?{
 }
 
 
-func main( callback: @escaping (Date?)->() ){
+func main( callback: @escaping (Date?)->() ) {
     // User inputs
     var userDirection = "sfcsho"
     var userWeek = ""
     var _nextBus: Date? = nil
+    // update current time
+    currUserTime = Date()
     
     // Get value for userWeek: weekday, saturday or holiday
     let jsonUrlString = "https://holidays-jp.github.io/api/v1/date.json"
@@ -158,12 +160,44 @@ func main( callback: @escaping (Date?)->() ){
         } catch let jsonErr {
             print("Error serializing json:", jsonErr)
         }
-        }.resume()  // end of 1st urlsession    
+        }.resume()  // end of 1st urlsession
     
+}
+
+
+extension TimeInterval {
     
+    func stringFromTimeInterval() -> String {
+        
+        let time = NSInteger(self)
+        
+        //        let ms = Int((self.truncatingRemainder(dividingBy: 1)) * 1000)
+        let seconds = time % 60
+        let minutes = (time / 60) % 60
+        let hours = (time / 3600)
+        print("5 here?")
+        return String(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds)
+        
+    }
     
+}
+
+
+
+func updateTimeLeft(busTime: Date?) {
     
-    
+    if busTime == nil{
+        ViewController().timeLeft.text = "no more bus"
+    }else{
+        currUserTime = Date()
+        //    print("current user time \(currUserTime)")
+        //    print("busTime \(busTime)")
+        print("4 nextBusTime: \(busTime)")
+        let elapsedTime = busTime?.timeIntervalSince(currUserTime)
+        print("5 elap: \(elapsedTime)")
+        ViewController().timeLeft.text = elapsedTime?.stringFromTimeInterval()
+    }
+
 }
 
 
@@ -187,12 +221,17 @@ class ViewController: UIViewController {
         
         super.viewDidLoad()
         
-        var nextBusTime = main() { (nextBusDateObj) -> () in
-            //            print("2 \(nextBus)")
+        var nextBusTime: Date? = nil
+        
+        let group = DispatchGroup()
+        group.enter()
+            
+        main() { (nextBusDateObj) -> () in
             if nextBusDateObj == nil{
                 print("No BUS")
                 DispatchQueue.main.async {
                     self.busInfo.text = "No bus!"
+                    group.leave()
                 }
                 
             } else{
@@ -202,24 +241,29 @@ class ViewController: UIViewController {
                     self.busInfo.numberOfLines = 0
                     //
                     self.busInfo.text = dateToStr(dateObj: nextBusDateObj)
+                    nextBusTime = nextBusDateObj
+                    print("1")
+                    group.leave()
                     
                 }
             }
         }
-
-        //call every 1 sec
-        let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-            
-            
-            
+        
+        group.notify(queue: .main){
+            print("2 nextBusTime: \(nextBusTime)")
+            //call every 1 sec
+            let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                print("3 nextBusTime: \(nextBusTime)")
+                updateTimeLeft(busTime: nextBusTime)
+                
+            }
         }
+        
+        
 
         
     }
-    @IBAction func getNextBus() {
-        
-        
-    }
+    
     
     @IBAction func changeDirection(_ sender: Any) {
         if self.departure.text == "SFC"{
