@@ -7,6 +7,9 @@
 import UIKit
 import SwiftyJSON
 
+// global variables
+let currUserTime = Date()
+
 //return date time info as string (yyyy/M/dd H:mm)
 func getDateTime() -> String{
     let date = Date()
@@ -73,14 +76,24 @@ func dateToStr(dateObj: Date?) -> String{
     return dateFormatter.string(from: dateObj!)
 }
 
+func jsonToDateObj(jsonObj: JSON?) -> Date?{
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy/MM/dd"
+    // ex: 2019/01/11
+    let currDateOnly = dateFormatter.string(from: currUserTime)
+    // "currDateOnly + busHour:busMin"   ex: "2019/01/11 09:25"
+    let jsonTimeStr = "\(currDateOnly) \(jsonObj!["hour"].intValue):\(jsonObj!["min"].intValue)"
+    // convert string to dateTime object
+    let busDateObj = strToDate(str:jsonTimeStr)
+    return busDateObj
+}
 
 
-func main( callback: @escaping (JSON?)->() ){
+func main( callback: @escaping (Date?)->() ){
     // User inputs
     var userDirection = "sfcsho"
     var userWeek = ""
-    let currUserTime = Date()
-    var _nextBus: JSON? = nil
+    var _nextBus: Date? = nil
     
     // Get value for userWeek: weekday, saturday or holiday
     let jsonUrlString = "https://holidays-jp.github.io/api/v1/date.json"
@@ -111,15 +124,9 @@ func main( callback: @escaping (JSON?)->() ){
                     let busSchedule = json[userDirection][userWeek].arrayValue
                     
                     // check if the last bus has left
-                    let lastBus = busSchedule.last!
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy/MM/dd"
-                    // ex: 2019/01/11
-                    let currDateOnly = dateFormatter.string(from: currUserTime)
-                    // currDateOnly + busHour:busMin   ex: 2019/01/11 09:25
-                    let lastBusStr = "\(currDateOnly) \(lastBus["hour"].intValue):\(lastBus["min"].intValue)"
-                    // convert string to dateTime object
-                    let lastBusObj = strToDate(str:lastBusStr)
+                    let lastBus = busSchedule.last
+                    // convert JSON to date object
+                    let lastBusObj = jsonToDateObj(jsonObj: lastBus)
                     // Compare
                     if lastBusObj! < currUserTime{
                         print("Last bus has left!")
@@ -127,13 +134,12 @@ func main( callback: @escaping (JSON?)->() ){
                     else{
                         // Find the next bus
                         for bus in busSchedule{
-                            let busTimeStr = "\(currDateOnly) \(bus["hour"].intValue):\(bus["min"].intValue)"
-                            // convert string to dateTime object
-                            let busTimeObj = strToDate(str:busTimeStr)
+                            // convert JSON to date object
+                            let busTimeObj = jsonToDateObj(jsonObj: bus)
                             // Compare
                             if busTimeObj! > currUserTime{
                                 print("Found next bus at",dateToStr(dateObj: busTimeObj))
-                                _nextBus = bus
+                                _nextBus = busTimeObj
                                 break
                             }
                         }
@@ -169,45 +175,48 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var arrival: UILabel!
     
+    @IBOutlet weak var timeLeft: UILabel!
+    
+    
+    
     @IBOutlet weak var busInfo: UILabel!
-    
-    @IBOutlet weak var busListTable: UITableView!
-    
     
     override func viewDidLoad() {
         
         
         
         super.viewDidLoad()
-//
-//        let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-//
-//            let nextBus = main()
-//            if nextBus == nil{
-//                print("No BUS")
-//            } else{
-//                print(nextBus!)
-//            }
-//        }
-//
         
-    }
-    @IBAction func getNextBus(_ sender: Any) {
-        var temp: String = ""
-        main() { (nextBus) -> () in
+        var nextBusTime = main() { (nextBusDateObj) -> () in
             //            print("2 \(nextBus)")
-            if nextBus == nil{
+            if nextBusDateObj == nil{
                 print("No BUS")
-                temp = "No bus"
+                DispatchQueue.main.async {
+                    self.busInfo.text = "No bus!"
+                }
+                
             } else{
-                print("The next bus is")
-                print(nextBus!)
-                temp = (nextBus?.rawString())!
-                print("inside\(temp)")
+                //                print("The next bus is")
+                //                print(nextBusDateObj!)
+                DispatchQueue.main.async {
+                    self.busInfo.numberOfLines = 0
+                    //
+                    self.busInfo.text = dateToStr(dateObj: nextBusDateObj)
+                    
+                }
             }
         }
-        print("outside\(temp)")
-        self.busInfo.text = temp
+
+        //call every 1 sec
+        let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            
+            
+            
+        }
+
+        
+    }
+    @IBAction func getNextBus() {
         
         
     }
@@ -225,3 +234,23 @@ class ViewController: UIViewController {
     
     
 }
+
+
+//{ (nextBusDateObj) -> () in
+//    //            print("2 \(nextBus)")
+//    if nextBusDateObj == nil{
+//        print("No BUS")
+//        DispatchQueue.main.async {
+//            self.busInfo.text = "No bus!"
+//        }
+//
+//    } else{
+//        //                print("The next bus is")
+//        //                print(nextBusDateObj!)
+//        DispatchQueue.main.async {
+//            self.busInfo.numberOfLines = 0
+//            //
+//            self.busInfo.text = dateToStr(dateObj: nextBusDateObj)
+//
+//        }
+//}
