@@ -165,12 +165,6 @@ func main( callback: @escaping (JSON?)->() ){
 class ViewController: UIViewController {
     
     
-    @IBOutlet weak var departure: UILabel!
-    
-    @IBOutlet weak var arrival: UILabel!
-    
-    @IBOutlet weak var busInfo: UILabel!
-    
     @IBOutlet weak var busListTable: UITableView!
     
     
@@ -190,37 +184,19 @@ class ViewController: UIViewController {
 //            }
 //        }
 //
-        
-    }
-    @IBAction func getNextBus(_ sender: Any) {
-        var temp: String = ""
         main() { (nextBus) -> () in
-            //            print("2 \(nextBus)")
+//            print("2 \(nextBus)")
             if nextBus == nil{
                 print("No BUS")
-                temp = "No bus"
             } else{
                 print("The next bus is")
                 print(nextBus!)
-                temp = (nextBus?.rawString())!
-                print("inside\(temp)")
             }
         }
-        print("outside\(temp)")
-        self.busInfo.text = temp
         
-        
-    }
     
-    @IBAction func changeDirection(_ sender: Any) {
-        if self.departure.text == "SFC"{
-            self.departure.text = "Shonandai"
-            self.arrival.text = "SFC"
-        } else {
-            self.departure.text = "SFC"
-            self.arrival.text = "Shonandai"
-        }
-
+        
+        
     }
     
     
