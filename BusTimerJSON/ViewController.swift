@@ -169,13 +169,13 @@ extension TimeInterval {
     
     func stringFromTimeInterval() -> String {
         
-        let time = NSInteger(self)
+        let time = Int(self)
         
         //        let ms = Int((self.truncatingRemainder(dividingBy: 1)) * 1000)
         let seconds = time % 60
         let minutes = (time / 60) % 60
         let hours = (time / 3600)
-        print("5 here?")
+//        print("5 here?")
         return String(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds)
         
     }
@@ -184,21 +184,7 @@ extension TimeInterval {
 
 
 
-func updateTimeLeft(busTime: Date?) {
-    
-    if busTime == nil{
-        ViewController().timeLeft.text = "no more bus"
-    }else{
-        currUserTime = Date()
-        //    print("current user time \(currUserTime)")
-        //    print("busTime \(busTime)")
-        print("4 nextBusTime: \(busTime)")
-        let elapsedTime = busTime?.timeIntervalSince(currUserTime)
-        print("5 elap: \(elapsedTime)")
-        ViewController().timeLeft.text = elapsedTime?.stringFromTimeInterval()
-    }
 
-}
 
 
 
@@ -214,6 +200,27 @@ class ViewController: UIViewController {
     
     
     @IBOutlet weak var busInfo: UILabel!
+    
+    func updateTimeLeft(busTime: Date?) {
+        
+        if busTime == nil{
+            
+            self.timeLeft.text = "no more bus"
+        }else{
+            
+            currUserTime = Date()
+            //    print("current user time \(currUserTime)")
+            //    print("busTime \(busTime)")
+//            print("4 nextBusTime: \(busTime)")
+            let elapsedTime = busTime?.timeIntervalSince(currUserTime)
+//            print("5 elap: \(elapsedTime)")
+            if elapsedTime != nil {
+                self.timeLeft.text = elapsedTime?.stringFromTimeInterval()
+            }
+            
+        }
+        
+    }
     
     override func viewDidLoad() {
         
@@ -242,7 +249,7 @@ class ViewController: UIViewController {
                     //
                     self.busInfo.text = dateToStr(dateObj: nextBusDateObj)
                     nextBusTime = nextBusDateObj
-                    print("1")
+//                    print("1")
                     group.leave()
                     
                 }
@@ -250,11 +257,11 @@ class ViewController: UIViewController {
         }
         
         group.notify(queue: .main){
-            print("2 nextBusTime: \(nextBusTime)")
+//            print("2 nextBusTime: \(nextBusTime)")
             //call every 1 sec
             let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                print("3 nextBusTime: \(nextBusTime)")
-                updateTimeLeft(busTime: nextBusTime)
+//                print("3 nextBusTime: \(nextBusTime)")
+                self.updateTimeLeft(busTime: nextBusTime)
                 
             }
         }
