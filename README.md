@@ -1,6 +1,6 @@
 # ios-sfcbustimer
 
-## Bus timer for the Shonandai, Tsujido station <-> Keio SFC
+Bus timer for the Shonandai, Tsujido station <-> Keio SFC
 
 ## File with the most recent update:
 https://github.com/leochoo/ios-sfcbustimer/blob/feature/name_leochoo/BusTimerJSON/ViewController.swift
