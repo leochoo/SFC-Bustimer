@@ -89,7 +89,7 @@ func jsonToDateObj(jsonObj: JSON?) -> Date?{
 }
 
 
-func main( callback: @escaping (Date?)->() ) {
+func getNextBus( callback: @escaping (Date?)->() ) {
     // User inputs
     var userDirection = "sfcsho"
     var userWeek = ""
@@ -124,7 +124,6 @@ func main( callback: @escaping (Date?)->() ) {
                     
                     // list of weekday buses
                     let busSchedule = json[userDirection][userWeek].arrayValue
-                    
                     // check if the last bus has left
                     let lastBus = busSchedule.last
                     // convert JSON to date object
@@ -146,7 +145,6 @@ func main( callback: @escaping (Date?)->() ) {
                             }
                         }
                     }
-
 //                    print("1 \(_nextBus)")
                     callback(_nextBus)
 
@@ -166,20 +164,15 @@ func main( callback: @escaping (Date?)->() ) {
 
 
 extension TimeInterval {
-    
     func stringFromTimeInterval() -> String {
-        
         let time = Int(self)
-        
         //        let ms = Int((self.truncatingRemainder(dividingBy: 1)) * 1000)
         let seconds = time % 60
         let minutes = (time / 60) % 60
         let hours = (time / 3600)
 //        print("5 here?")
         return String(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds)
-        
     }
-    
 }
 
 
@@ -192,116 +185,93 @@ class ViewController: UIViewController {
     
     
     @IBOutlet weak var departure: UILabel!
-    
     @IBOutlet weak var arrival: UILabel!
-    
     @IBOutlet weak var timeLeft: UILabel!
-    
-    
-    
+    @IBOutlet weak var changeDirection: UIButton!
     @IBOutlet weak var busInfo: UILabel!
     
+    var timer = Timer()
+    
     func updateTimeLeft(busTime: Date?) {
-        
         if busTime == nil{
-            
             self.timeLeft.text = "no more bus"
         }else{
-            
             currUserTime = Date()
             //    print("current user time \(currUserTime)")
             //    print("busTime \(busTime)")
 //            print("4 nextBusTime: \(busTime)")
             let elapsedTime = busTime?.timeIntervalSince(currUserTime)
-//            print("5 elap: \(elapsedTime)")
-            if elapsedTime != nil {
+            print("elap: \(elapsedTime) double: \(Double(elapsedTime ?? 0)) int: \(Int(elapsedTime ?? 0))")
+            if Double(elapsedTime ?? 0) >= 0 {
                 self.timeLeft.text = elapsedTime?.stringFromTimeInterval()
+            } else{
+                main()
             }
-            
         }
-        
     }
     
-    override func viewDidLoad() {
-        
-        
-        
-        super.viewDidLoad()
-        
+    func main() {
         var nextBusTime: Date? = nil
-        
         let group = DispatchGroup()
         group.enter()
-            
-        main() { (nextBusDateObj) -> () in
+        
+        getNextBus() { (nextBusDateObj) -> () in
+            // no bus left
             if nextBusDateObj == nil{
                 print("No BUS")
-                DispatchQueue.main.async {
+                DispatchQueue.main.async {//ui update always uses main thread
                     self.busInfo.text = "No bus!"
                     group.leave()
                 }
                 
             } else{
-                //                print("The next bus is")
-                //                print(nextBusDateObj!)
+                //show next bus
                 DispatchQueue.main.async {
                     self.busInfo.numberOfLines = 0
-                    //
                     self.busInfo.text = dateToStr(dateObj: nextBusDateObj)
                     nextBusTime = nextBusDateObj
-//                    print("1")
                     group.leave()
-                    
                 }
             }
         }
         
         group.notify(queue: .main){
-//            print("2 nextBusTime: \(nextBusTime)")
+            if self.timer.isValid{
+                self.timer.invalidate()
+                self.timer = Timer()
+            }
+            
+            //            print("2 nextBusTime: \(nextBusTime)")
             //call every 1 sec
-            let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-//                print("3 nextBusTime: \(nextBusTime)")
+            self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                //                print("3 nextBusTime: \(nextBusTime)")
                 self.updateTimeLeft(busTime: nextBusTime)
                 
+            
             }
         }
-        
-        
-
-        
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        main()
+        
+    }
     
     @IBAction func changeDirection(_ sender: Any) {
         if self.departure.text == "SFC"{
             self.departure.text = "Shonandai"
             self.arrival.text = "SFC"
+            // "shosfc"
+            main()
         } else {
             self.departure.text = "SFC"
             self.arrival.text = "Shonandai"
+            // "sfcsho"
+            main()
         }
-
     }
-    
     
 }
 
 
-//{ (nextBusDateObj) -> () in
-//    //            print("2 \(nextBus)")
-//    if nextBusDateObj == nil{
-//        print("No BUS")
-//        DispatchQueue.main.async {
-//            self.busInfo.text = "No bus!"
-//        }
-//
-//    } else{
-//        //                print("The next bus is")
-//        //                print(nextBusDateObj!)
-//        DispatchQueue.main.async {
-//            self.busInfo.numberOfLines = 0
-//            //
-//            self.busInfo.text = dateToStr(dateObj: nextBusDateObj)
-//
-//        }
-//}

@@ -31,13 +31,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="busInfo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ex4-Ud-3tl">
-                                <rect key="frame" x="36" y="490" width="304" height="36"/>
+                                <rect key="frame" x="36" y="480" width="304" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="timeLeft" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w5a-Lf-qyL">
-                                <rect key="frame" x="54" y="336" width="269" height="54"/>
+                                <rect key="frame" x="54" y="326" width="269" height="54"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="45"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -55,11 +55,15 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="busicon" translatesAutoresizingMaskIntoConstraints="NO" id="O3F-Xd-XHy">
-                                <rect key="frame" x="36" y="487" width="38" height="41"/>
+                                <rect key="frame" x="36" y="477" width="38" height="51"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alarm" translatesAutoresizingMaskIntoConstraints="NO" id="v4P-Gy-glH">
-                                <rect key="frame" x="296" y="492" width="44" height="38"/>
+                                <rect key="frame" x="296" y="482" width="44" height="48"/>
                             </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Vn2-QK-Rnf">
+                                <rect key="frame" x="36" y="552" width="304" height="218"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -77,13 +81,16 @@
                             <constraint firstItem="AR4-1O-TEr" firstAttribute="top" secondItem="cyZ-9v-Zfa" secondAttribute="bottom" constant="48" id="Lgf-dY-YDg"/>
                             <constraint firstItem="3NY-WC-a9f" firstAttribute="top" secondItem="M7h-kD-bZN" secondAttribute="bottom" constant="11" id="Spg-Z8-Hcw"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cyZ-9v-Zfa" secondAttribute="trailing" constant="136" id="WJ3-y0-BZg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Vn2-QK-Rnf" secondAttribute="trailing" constant="35" id="X8D-6p-Gaq"/>
                             <constraint firstItem="O3F-Xd-XHy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="36" id="XUW-Ra-tP6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="v4P-Gy-glH" secondAttribute="trailing" constant="35" id="XVF-P0-E9W"/>
                             <constraint firstItem="ex4-Ud-3tl" firstAttribute="top" secondItem="w5a-Lf-qyL" secondAttribute="bottom" constant="100" id="aPX-nw-JvA"/>
+                            <constraint firstItem="Vn2-QK-Rnf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="36" id="ay5-TO-DCS"/>
                             <constraint firstItem="cyZ-9v-Zfa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="29" id="eXh-SO-rg5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="M7h-kD-bZN" secondAttribute="trailing" constant="146" id="jQB-b1-FPc"/>
                             <constraint firstItem="ex4-Ud-3tl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="36" id="lkV-3g-Vn8"/>
-                            <constraint firstItem="w5a-Lf-qyL" firstAttribute="top" secondItem="3NY-WC-a9f" secondAttribute="bottom" constant="66" id="m4Y-SF-RUl"/>
+                            <constraint firstItem="w5a-Lf-qyL" firstAttribute="top" secondItem="3NY-WC-a9f" secondAttribute="bottom" constant="56" id="m4Y-SF-RUl"/>
+                            <constraint firstItem="Vn2-QK-Rnf" firstAttribute="top" secondItem="ex4-Ud-3tl" secondAttribute="bottom" constant="36" id="mqi-jd-btq"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ex4-Ud-3tl" secondAttribute="trailing" constant="35" id="qQV-bm-Afi"/>
                             <constraint firstItem="ex4-Ud-3tl" firstAttribute="leading" secondItem="O3F-Xd-XHy" secondAttribute="trailing" constant="-38" id="ubI-tS-6AH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="O3F-Xd-XHy" secondAttribute="bottom" constant="250" id="vj0-oj-Y1u"/>
@@ -96,6 +103,8 @@
                     <connections>
                         <outlet property="arrival" destination="3NY-WC-a9f" id="Cxz-hs-eZn"/>
                         <outlet property="busInfo" destination="ex4-Ud-3tl" id="iK3-v1-Odv"/>
+                        <outlet property="changeDirection" destination="M7h-kD-bZN" id="hsh-2f-lg5"/>
+                        <outlet property="departure" destination="AR4-1O-TEr" id="SY5-aV-RzR"/>
                         <outlet property="timeLeft" destination="w5a-Lf-qyL" id="a3p-ZF-V9b"/>
                     </connections>
                 </viewController>
