@@ -1,15 +1,10 @@
 # ios-sfcbustimer
-Hattori Hagino ken project
+
+Bus timer for Shonandai, Tsujido station <-> Keio SFC
+
+## File with the most recent update:
+https://github.com/leochoo/ios-sfcbustimer/blob/feature/name_leochoo/BusTimerJSON/ViewController.swift
 
 
-If loaded:
-	getNextBus
-	updateView
 
-if reverse clicked:
-	change direction
-	stop the timer
-	getNextBus
-	updateView
-		
-
+![scrnshot](https://i.imgur.com/HWijTcb.png)
