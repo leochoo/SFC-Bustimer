@@ -320,34 +320,34 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func saveData(_ sender: Any) {
-        // Get bus timetable
-        let jsonUrlString = "https://api.myjson.com/bins/10zfwo" // before type 2
-        //            let jsonUrlString2 = "https://api.myjson.com/bins/1ehrmg" // before adding type
-        //            let jsonUrlString2 = "https://api.myjson.com/bins/gd65c" //1/14/2019 data
-        //            let jsonUrlString2 = "https://api.myjson.com/bins/12dxt4" //testData generated for every h:m on 1/31
-        guard let url = URL(string: jsonUrlString) else {return}
-        URLSession.shared.dataTask(with: url) { (data, response, err) in
-            guard let data = data else { return }
-            // storing data directly without parsing
-            do{
-                UserDefaults.standard.set(data, forKey: "timetable")
-            } catch let Err {
-                print("Error", Err)
-            }
-            }.resume() //end of url session
-    }
-    
     @IBAction func checkData(_ sender: Any){
         // should serializing json after loading from UserDefaults
-        if let data = UserDefaults.standard.data(forKey: "timetable"){
+        if let timetableData = UserDefaults.standard.data(forKey: "timetable"){
             do{
-                let json = try JSON(data: data)
+                let json = try JSON(data: timetableData)
                 print(json)
             } catch let jsonErr {
                 print("Error serializing json:", jsonErr)
             }
+        } else {
+            print("no timetable data stored")
         }
+        
+        if let holidaysData = UserDefaults.standard.data(forKey: "holidays"){
+            do{
+                let json = try JSON(data: holidaysData)
+                print(json)
+            } catch let jsonErr {
+                print("Error serializing json:", jsonErr)
+            }
+        } else {
+            print("no holidays data stored")
+        }
+    }
+    
+    @IBAction func deleteData(_ sender: Any){
+        UserDefaults.standard.removeObject(forKey: "timetable")
+        UserDefaults.standard.removeObject(forKey: "holidays")
     }
 }
 

@@ -17,6 +17,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        // UserDefaultsのインスタンスを作成
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        
+        if(launchedBefore == true) {
+            print("already launched")
+            //動作確認用のリセット処理
+            UserDefaults.standard.set(false, forKey: "launchedBefore")
+            
+        } else {
+            print("first launch")
+            //launchedBeforeをtrue(起動済み)に更新
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
+            //初回起動処理
+            saveData()
+        }
         return true
     }
 
@@ -88,6 +103,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
+    
+    func saveData() {
+        // Get bus timetable
+        let BusJsonUrlString = "https://api.myjson.com/bins/10zfwo" // before type 2
+        guard let busUrl = URL(string: BusJsonUrlString) else {return}
+        URLSession.shared.dataTask(with: busUrl) { (data, response, err) in
+            guard let data = data else { return }
+            // storing data directly without parsing
+            UserDefaults.standard.set(data, forKey: "timetable")
+            }.resume() //end of url session
+        
+        let dateJsonUrlString = "https://holidays-jp.github.io/api/v1/date.json"
+        guard let dateUrl = URL(string: dateJsonUrlString) else {return}
+        URLSession.shared.dataTask(with: dateUrl) { (data, response, err) in
+            guard let data = data else { return }
+                UserDefaults.standard.set(data, forKey: "holidays")
+            }.resume() //end of url session
+    }
 }
 
