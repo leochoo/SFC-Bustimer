@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if(launchedBefore == true) {
             print("already launched")
             //動作確認用のリセット処理
-            UserDefaults.standard.set(false, forKey: "launchedBefore")
+            //UserDefaults.standard.set(false, forKey: "launchedBefore")
             
         } else {
             print("first launch")
