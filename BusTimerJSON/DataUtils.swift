@@ -20,8 +20,8 @@ class DataUtils{
             UserDefaults.standard.set(data, forKey: "timetable")
             }.resume() //end of url session
         
-        let dateJsonUrlString = "https://holidays-jp.github.io/api/v1/date.json"
-        guard let dateUrl = URL(string: dateJsonUrlString) else {return}
+        let holidaysJsonUrlString = "https://holidays-jp.github.io/api/v1/date.json"
+        guard let dateUrl = URL(string: holidaysJsonUrlString) else {return}
         URLSession.shared.dataTask(with: dateUrl) { (data, response, err) in
             guard let data = data else { return }
             UserDefaults.standard.set(data, forKey: "holidays")
@@ -56,4 +56,35 @@ class DataUtils{
         UserDefaults.standard.removeObject(forKey: "timetable")
         UserDefaults.standard.removeObject(forKey: "holidays")
     }
+    
+    class func parseHolidaysJson() -> (JSON){
+        var json = JSON()
+        if let holidaysData = UserDefaults.standard.data(forKey: "holidays"){
+            do{
+                json = try JSON(data: holidaysData)
+                print(json)
+            } catch let jsonErr {
+                print("Error serializing json:", jsonErr)
+            }
+        } else {
+            print("no holidays data stored")
+        }
+        return json
+    }
+    
+    class func parseTimetableJson() -> (JSON){
+        var json = JSON()
+        if let timetableData = UserDefaults.standard.data(forKey: "timetable"){
+            do{
+                json = try JSON(data: timetableData)
+                print(json)
+            } catch let jsonErr {
+                print("Error serializing json:", jsonErr)
+            }
+        } else {
+            print("no timetable data stored")
+        }
+        return json
+    }
+    
 }

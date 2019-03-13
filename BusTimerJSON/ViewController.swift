@@ -7,7 +7,6 @@
 import UIKit
 import SwiftyJSON
 
-
 //return date time info as string (yyyy/M/dd H:mm)
 func getDateTime() -> String{
     let date = Date()
@@ -86,8 +85,7 @@ func jsonToDateObj(jsonObj: JSON?) -> Date?{
     return busDateObj
 }
 
-
-func getNextBus( callback: @escaping (Date?)->() ) {
+func getNextBus(callback: @escaping (Date?)->()) {
     // User inputs
     
     var userWeek = ""
@@ -95,73 +93,42 @@ func getNextBus( callback: @escaping (Date?)->() ) {
     // update current time
     currUserTime = Date()
     
-    // Get value for userWeek: weekday, saturday or holiday
-    let jsonUrlString = "https://holidays-jp.github.io/api/v1/date.json"
-    guard let url = URL(string: jsonUrlString) else {return}
-    URLSession.shared.dataTask(with: url) { (data, response, err) in
-        guard let data = data else { return }
-        do {
-            let json = try JSON(data: data)
-            let arrayKeys = Array(json.dictionaryValue.keys)
-            // get today in a format comparable
-            var todayFormatted = getDateTime()
-            print(todayFormatted)
-            todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
-            // Identify if today is weekday, saturday or holiday
-            userWeek = identifyDayType(today: todayFormatted, holidays: arrayKeys)
-            
-            
-            // 2nd url session
-            // Get next bus information
-            let jsonUrlString2 = "https://api.myjson.com/bins/10zfwo" // before type 2
-//            let jsonUrlString2 = "https://api.myjson.com/bins/1ehrmg" // before adding type
-//            let jsonUrlString2 = "https://api.myjson.com/bins/gd65c" //1/14/2019 data
-//            let jsonUrlString2 = "https://api.myjson.com/bins/12dxt4" //testData generated for every h:m on 1/31
-            guard let url2 = URL(string: jsonUrlString2) else {return}
-            URLSession.shared.dataTask(with: url2) { (data, response, err) in
-                guard let data = data else { return }
-                do {
-                    let json = try JSON(data: data)
-                    
-                    // list of weekday buses
-                    let busSchedule = json[userDirection][userWeek].arrayValue
-                    // check if the last bus has left
-                    let lastBus = busSchedule.last
-                    // convert JSON to date object
-                    let lastBusObj = jsonToDateObj(jsonObj: lastBus)
-                    // Compare
-                    if lastBusObj! < currUserTime{
-                        print("Last bus has left!")
-                    }
-                    else{
-                        // Find the next bus
-                        for bus in busSchedule{
-                            // convert JSON to date object
-                            let busTimeObj = jsonToDateObj(jsonObj: bus)
-                            // Compare
-                            if busTimeObj! > currUserTime{
-                                print("Found next bus at",dateToStr(dateObj: busTimeObj))
-                                _nextBus = busTimeObj
-                                break
-                            }
-                        }
-                    }
-                    //                    print("1 \(_nextBus)")
-                    callback(_nextBus)
-                    
-                } catch let jsonErr {
-                    print("Error serializing json:", jsonErr)
-                }
-                
-            }.resume() //end of 2nd url session
+    let arrayKeys = Array(holidaysJson.dictionaryValue.keys)
+    // get today in a format comparable
+    var todayFormatted = getDateTime()
+    print(todayFormatted)
+    todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
+    // Identify if today is weekday, saturday or holiday
+    userWeek = identifyDayType(today: todayFormatted, holidays: arrayKeys)
     
-        } catch let jsonErr {
-            print("Error serializing json:", jsonErr)
+    
+    // Get next bus information
+    // list of weekday buses
+    let busSchedule = timetableJson[userDirection][userWeek].arrayValue
+    // check if the last bus has left
+    let lastBus = busSchedule.last
+    // convert JSON to date object
+    let lastBusObj = jsonToDateObj(jsonObj: lastBus)
+    // Compare
+    if lastBusObj! < currUserTime{
+        print("Last bus has left!")
+    }
+    else{
+        // Find the next bus
+        for bus in busSchedule{
+            // convert JSON to date object
+            let busTimeObj = jsonToDateObj(jsonObj: bus)
+            // Compare
+            if busTimeObj! > currUserTime{
+                print("Found next bus at",dateToStr(dateObj: busTimeObj))
+                _nextBus = busTimeObj
+                break
+            }
         }
-    }.resume()  // end of 1st urlsession
-    
+    }
+    //                    print("1 \(_nextBus)")
+    callback(_nextBus)
 }
-
 
 extension TimeInterval {
     func stringFromTimeInterval() -> String {
@@ -175,17 +142,16 @@ extension TimeInterval {
     }
 }
 
-
 // global variables
 var currUserTime = Date()
 var nextBusTime: Date? = nil
 var userDirection = "sfcsho"
 var dept = "sfc"
 var arrv = "Shonandai"
+var timetableJson = JSON()
+var holidaysJson = JSON()
 
 class ViewController: UIViewController {
-    
-    
     @IBOutlet weak var departure: UILabel!
     @IBOutlet weak var arrival: UILabel!
     @IBOutlet weak var timeLeft: UILabel!
@@ -235,6 +201,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //UserDefaultsのデータをjson化
+        timetableJson = DataUtils.parseTimetableJson()
+        holidaysJson = DataUtils.parseHolidaysJson()
+
         let group = DispatchGroup()
         
         group.enter()
@@ -291,6 +261,7 @@ class ViewController: UIViewController {
             }
         }
     }
+    
     @IBAction func changeLocation(_ sender: Any) {
         if self.departure.text == "SFC" || self.arrival.text == "SFC" {
             if self.departure.text == "Tsujido"{
@@ -321,35 +292,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func checkData(_ sender: Any){
-        // should serializing json after loading from UserDefaults
-        if let timetableData = UserDefaults.standard.data(forKey: "timetable"){
-            do{
-                let json = try JSON(data: timetableData)
-                print(json)
-            } catch let jsonErr {
-                print("Error serializing json:", jsonErr)
-            }
-        } else {
-            print("no timetable data stored")
-        }
-        
-        if let holidaysData = UserDefaults.standard.data(forKey: "holidays"){
-            do{
-                let json = try JSON(data: holidaysData)
-                print(json)
-            } catch let jsonErr {
-                print("Error serializing json:", jsonErr)
-            }
-        } else {
-            print("no holidays data stored")
-        }
+        DataUtils.checkData()
     }
     
     @IBAction func deleteData(_ sender: Any){
-        UserDefaults.standard.removeObject(forKey: "timetable")
-        UserDefaults.standard.removeObject(forKey: "holidays")
+        DataUtils.DeleteData()
     }
 }
-
-
-

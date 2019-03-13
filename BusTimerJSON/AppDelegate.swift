@@ -23,14 +23,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if(launchedBefore == true) {
             print("already launched")
             //動作確認用のリセット処理
-            //UserDefaults.standard.set(false, forKey: "launchedBefore")
+            UserDefaults.standard.set(false, forKey: "launchedBefore")
             
         } else {
             print("first launch")
             //launchedBeforeをtrue(起動済み)に更新
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             //初回起動処理
-            saveData()
+            DataUtils.saveData()
+            sleep(1)
         }
         return true
     }
