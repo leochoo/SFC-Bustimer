@@ -1,17 +1,10 @@
-#pseudo-code
+# ios-sfcbustimer
+
+Bus timer for Shonandai, Tsujido station <-> Keio SFC
+
+## File with the most recent update:
+https://github.com/leochoo/ios-sfcbustimer/blob/feature/name_leochoo/BusTimerJSON/ViewController.swift
 
 
 
-## Saving JSON and displaying data
-Best way
-1. Scrape data using Swift
-2. Store it to JSON as CoreData
-3. Read from that local data
-
-Current way
-1. Scrape using Ruby
-2. Manually upload data to myjson
-3. Download and store it as a file or CoreData.
-4. Read from that data
-
-
+![scrnshot](https://i.imgur.com/HWijTcb.png)

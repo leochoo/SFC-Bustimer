@@ -1,0 +1,21 @@
+pseudo bus lastbus logic
+
+
+currUserTime
+
+if userdirection:
+    if userweek == weekday:
+        let busList = busTimer.shosfc?[0].weekday
+        for bus in busList!:
+
+            busTimeToTimeObject{
+                //get today's year, month, date
+                //combine that with the busHour and busMin 
+                //convert that into time object
+            }
+
+            busTimeObj! > currUserTime{
+
+            }
+
+
