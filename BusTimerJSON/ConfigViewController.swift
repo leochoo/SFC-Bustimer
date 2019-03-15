@@ -14,20 +14,25 @@ class ConfigViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         form
-            +++ Section("セクション1")
-            <<< TextRow { row in
-                row.title = "タイトル"
-                row.placeholder = "タイトルを入力"
+            +++ Section("Config")
+            <<< ButtonRow { row in
+                row.title = "時刻表データの更新"
+                }.onCellSelection{cell,row in
+                    DataUtils.displayAlert(viewController: self)
+                    DataUtils.saveData()
             }
-            <<< TextAreaRow { row in
-                row.placeholder = "メモを入力"
+
+            <<< ActionSheetRow<String>("") {
+                $0.title = "使用駅"
+                $0.selectorTitle = "駅を選択"
+                $0.options = ["湘南台","辻堂"]
+                $0.value = "湘南台"    // 初期選択項目
+                }.onChange{row in
+                    print(row.value)
             }
+
             // ここからセクション2のコード
-            +++ Section("セクション2")
-            <<< TextRow { row in
-                row.title = "1行メモ"
-                row.placeholder = "1行メモを入力"
-            }
+
 
         // Do any additional setup after loading the view.
     }

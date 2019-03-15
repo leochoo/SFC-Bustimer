@@ -88,4 +88,15 @@ class DataUtils{
         return json
     }
     
+    class func displayAlert(viewController: UIViewController) {
+        let title = "データを取得します。"
+        let message = ""
+        let okText = "OK"
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        let okayButton = UIAlertAction(title: okText, style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(okayButton)
+
+        viewController.present(alert, animated: true, completion: nil)
+    }
 }
