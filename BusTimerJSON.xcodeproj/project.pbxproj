@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7485B32D7BDF8CEA33E6DD0D /* Pods_BusTimerJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B7AE5F916FF72C69531404 /* Pods_BusTimerJSON.framework */; };
+		46230612B0E30C15EC578A34 /* Pods_BusTimerJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CEDF55CBE015BA7001F22A /* Pods_BusTimerJSON.framework */; };
+		B6BC643F223C0720002C4085 /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BC643E223C0720002C4085 /* ConfigViewController.swift */; };
 		B6F9D2042238C90500C00484 /* DataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9D2032238C90500C00484 /* DataUtils.swift */; };
 		B6F9D2062238D8DF00C00484 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9D2052238D8DF00C00484 /* DateUtils.swift */; };
 		D736C01921F261C900ECEBD2 /* busicon.png in Resources */ = {isa = PBXBuildFile; fileRef = D736C01821F261C900ECEBD2 /* busicon.png */; };
@@ -20,8 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		31CEDF55CBE015BA7001F22A /* Pods_BusTimerJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BusTimerJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		627335DB332739D98C23468B /* Pods-BusTimerJSON.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BusTimerJSON.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BusTimerJSON/Pods-BusTimerJSON.debug.xcconfig"; sourceTree = "<group>"; };
-		B5B7AE5F916FF72C69531404 /* Pods_BusTimerJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BusTimerJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6BC643E223C0720002C4085 /* ConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
 		B6F9D2032238C90500C00484 /* DataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUtils.swift; sourceTree = "<group>"; };
 		B6F9D2052238D8DF00C00484 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		D736C01821F261C900ECEBD2 /* busicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = busicon.png; sourceTree = "<group>"; };
@@ -33,7 +35,6 @@
 		D755CAA3218448F30069FDE3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D755CAA6218448F30069FDE3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D755CAA8218448F30069FDE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D7A852F321E103D20055030E /* SwifyJSON.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = SwifyJSON.playground; path = "/Users/leonard/Desktop/dev/ios-sfcbustimer/SwifyJSON.playground"; sourceTree = "<absolute>"; };
 		F01FFEB13C87228D516E8A36 /* Pods-BusTimerJSON.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BusTimerJSON.release.xcconfig"; path = "Pods/Target Support Files/Pods-BusTimerJSON/Pods-BusTimerJSON.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -42,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7485B32D7BDF8CEA33E6DD0D /* Pods_BusTimerJSON.framework in Frameworks */,
+				46230612B0E30C15EC578A34 /* Pods_BusTimerJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +85,7 @@
 				B6F9D2032238C90500C00484 /* DataUtils.swift */,
 				B6F9D2052238D8DF00C00484 /* DateUtils.swift */,
 				D755CA9D218448F10069FDE3 /* Main.storyboard */,
+				B6BC643E223C0720002C4085 /* ConfigViewController.swift */,
 				D755CAA3218448F30069FDE3 /* Assets.xcassets */,
 				D736C01821F261C900ECEBD2 /* busicon.png */,
 				D755CAA5218448F30069FDE3 /* LaunchScreen.storyboard */,
@@ -96,8 +98,7 @@
 		F8A7B2723F015F89076F258D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D7A852F321E103D20055030E /* SwifyJSON.playground */,
-				B5B7AE5F916FF72C69531404 /* Pods_BusTimerJSON.framework */,
+				31CEDF55CBE015BA7001F22A /* Pods_BusTimerJSON.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -227,6 +228,7 @@
 			files = (
 				D755CAA2218448F10069FDE3 /* BusTimerJSON.xcdatamodeld in Sources */,
 				B6F9D2042238C90500C00484 /* DataUtils.swift in Sources */,
+				B6BC643F223C0720002C4085 /* ConfigViewController.swift in Sources */,
 				B6F9D2062238D8DF00C00484 /* DateUtils.swift in Sources */,
 				D755CA9C218448F10069FDE3 /* ViewController.swift in Sources */,
 				D755CA9A218448F10069FDE3 /* AppDelegate.swift in Sources */,
