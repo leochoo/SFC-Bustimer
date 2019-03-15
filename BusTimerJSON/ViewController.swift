@@ -177,15 +177,15 @@ class ViewController: UIViewController {
             self.arrival.text = "Shonandai"
             userDirection = "sfcsho"
         }
-        
+        // re-calculate the next bus
         main()
     }
     
-    @IBAction func checkData(_ sender: Any){
-        DataUtils.checkData()
-    }
-    
-    @IBAction func deleteData(_ sender: Any){
-        DataUtils.DeleteData()
-    }
+//    @IBAction func checkData(_ sender: Any){
+//        DataUtils.checkData()
+//    }
+//
+//    @IBAction func deleteData(_ sender: Any){
+//        DataUtils.DeleteData()
+//    }
 }

@@ -10,6 +10,7 @@
 		7485B32D7BDF8CEA33E6DD0D /* Pods_BusTimerJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B7AE5F916FF72C69531404 /* Pods_BusTimerJSON.framework */; };
 		B6F9D2042238C90500C00484 /* DataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9D2032238C90500C00484 /* DataUtils.swift */; };
 		B6F9D2062238D8DF00C00484 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9D2052238D8DF00C00484 /* DateUtils.swift */; };
+		D72EAADE223BE97600A97913 /* arrow-down-sign-to-navigate.png in Resources */ = {isa = PBXBuildFile; fileRef = D72EAADD223BE97600A97913 /* arrow-down-sign-to-navigate.png */; };
 		D736C01921F261C900ECEBD2 /* busicon.png in Resources */ = {isa = PBXBuildFile; fileRef = D736C01821F261C900ECEBD2 /* busicon.png */; };
 		D755CA9A218448F10069FDE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755CA99218448F10069FDE3 /* AppDelegate.swift */; };
 		D755CA9C218448F10069FDE3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755CA9B218448F10069FDE3 /* ViewController.swift */; };
@@ -24,6 +25,7 @@
 		B5B7AE5F916FF72C69531404 /* Pods_BusTimerJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BusTimerJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6F9D2032238C90500C00484 /* DataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUtils.swift; sourceTree = "<group>"; };
 		B6F9D2052238D8DF00C00484 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
+		D72EAADD223BE97600A97913 /* arrow-down-sign-to-navigate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-down-sign-to-navigate.png"; sourceTree = "<group>"; };
 		D736C01821F261C900ECEBD2 /* busicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = busicon.png; sourceTree = "<group>"; };
 		D755CA96218448F10069FDE3 /* BusTimerJSON.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusTimerJSON.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D755CA99218448F10069FDE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				B6F9D2052238D8DF00C00484 /* DateUtils.swift */,
 				D755CA9D218448F10069FDE3 /* Main.storyboard */,
 				D755CAA3218448F30069FDE3 /* Assets.xcassets */,
+				D72EAADD223BE97600A97913 /* arrow-down-sign-to-navigate.png */,
 				D736C01821F261C900ECEBD2 /* busicon.png */,
 				D755CAA5218448F30069FDE3 /* LaunchScreen.storyboard */,
 				D755CAA8218448F30069FDE3 /* Info.plist */,
@@ -162,6 +165,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D72EAADE223BE97600A97913 /* arrow-down-sign-to-navigate.png in Resources */,
 				D755CAA7218448F30069FDE3 /* LaunchScreen.storyboard in Resources */,
 				D736C01921F261C900ECEBD2 /* busicon.png in Resources */,
 				D755CAA4218448F30069FDE3 /* Assets.xcassets in Resources */,
