@@ -22,6 +22,7 @@ func getNextBus(callback: @escaping (Date?)->()) {
     
     // Get the next bus information
     let busSchedule = timetableJson[userDirection][userWeek].arrayValue
+    print(busSchedule)
     let lastBus = busSchedule.last
     let lastBusObj = DateUtils.jsonToDateObj(jsonObj: lastBus)
     if lastBusObj! < currUserTime{
@@ -79,7 +80,7 @@ class ViewController: UIViewController {
             //            print("4 nextBusTime: \(busTime)")
             let elapsedTime = busTime?.timeIntervalSince(currUserTime)
             if Double(elapsedTime ?? 0) > 0 {
-                print("elap: \(elapsedTime) double: \(Double(elapsedTime ?? 0)) int: \(Int(elapsedTime ?? 0))")
+                //print("elap: \(elapsedTime) double: \(Double(elapsedTime ?? 0)) int: \(Int(elapsedTime ?? 0))")
                 self.timeLeft.text = elapsedTime?.stringFromTimeInterval()
             } else{
                 main()
