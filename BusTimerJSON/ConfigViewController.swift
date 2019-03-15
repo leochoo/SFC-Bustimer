@@ -15,25 +15,20 @@ class ConfigViewController: FormViewController {
         super.viewDidLoad()
         form
             +++ Section("Config")
-            <<< ButtonRow { row in
-                row.title = "時刻表データの更新"
-                }.onCellSelection{cell,row in
-                    DataUtils.displayAlert(viewController: self)
-                    DataUtils.saveData()
-            }
-
             <<< ActionSheetRow<String>("") {
                 $0.title = "使用駅"
                 $0.selectorTitle = "駅を選択"
                 $0.options = ["湘南台","辻堂"]
                 $0.value = "湘南台"    // 初期選択項目
                 }.onChange{row in
-                    print(row.value)
+                    print(row.value as Any)
             }
-
-            // ここからセクション2のコード
-
-
+            <<< ButtonRow { row in
+                row.title = "時刻表データの更新"
+                }.onCellSelection{cell,row in
+                    DataUtils.displayAlert(viewController: self)
+                    DataUtils.saveData()
+            }
         // Do any additional setup after loading the view.
     }
     
