@@ -11,7 +11,14 @@ func getNextBus(callback: @escaping (Date?)->()) {
     // TO DO: change these to user inputs later
     // var userWeek = ""
     var _nextBus: Date? = nil
+    upcomingBuses = [] //初期化
+    
+    //variables for searching in bus for loop
+    var isNextBusFound = false
+    var upcomingBusesCount = 0;
+    
     currUserTime = Date()
+    
     
     // Get correct userWeek data (weekend, sat, sun)
     let arrayKeys = Array(holidaysJson.dictionaryValue.keys)
@@ -22,7 +29,7 @@ func getNextBus(callback: @escaping (Date?)->()) {
     
     // Get the next bus information
     let busSchedule = timetableJson[userDirection][userWeek].arrayValue
-    print(busSchedule)
+    print(type(of:busSchedule))
     let lastBus = busSchedule.last
     let lastBusObj = DateUtils.jsonToDateObj(jsonObj: lastBus)
     if lastBusObj! < currUserTime{
@@ -32,9 +39,14 @@ func getNextBus(callback: @escaping (Date?)->()) {
         for bus in busSchedule{
             let busTimeObj = DateUtils.jsonToDateObj(jsonObj: bus)
             if busTimeObj! > currUserTime{
-                print("Found next bus at", DateUtils.dateToStr(dateObj: busTimeObj))
-                _nextBus = busTimeObj
-                break
+                if(!isNextBusFound){
+                    print("Found next bus at", DateUtils.dateToStr(dateObj: busTimeObj))
+                    _nextBus = busTimeObj
+                    isNextBusFound = true
+                }
+                upcomingBuses.append(bus)
+                upcomingBusesCount += 1
+                if(upcomingBusesCount > 4) {break}
             }
         }
     }
@@ -59,14 +71,16 @@ var dept = "sfc"
 var arrv = "Shonandai"
 var timetableJson = JSON()
 var holidaysJson = JSON()
+var upcomingBuses: [JSON] = []
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var departure: UILabel!
     @IBOutlet weak var arrival: UILabel!
     @IBOutlet weak var timeLeft: UILabel!
     @IBOutlet weak var changeDirection: UIButton!
     @IBOutlet weak var busInfo: UILabel!
     @IBOutlet var changeLocation: UIButton!
+    @IBOutlet weak var tableView: UITableView!
     
     var timer = Timer()
     
@@ -102,6 +116,7 @@ class ViewController: UIViewController {
                     self.busInfo.numberOfLines = 0
                     self.busInfo.text = DateUtils.dateToStr(dateObj: nextBusDateObj)
                     nextBusTime = nextBusDateObj
+                    self.tableView.reloadData()
                 }
             }
         }
@@ -109,10 +124,12 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //UserDefaultsのデータをjson化
         timetableJson = DataUtils.parseTimetableJson()
         holidaysJson = DataUtils.parseHolidaysJson()
+        
+        //TO DO
+        //ローカルデータがない場合の処理
         
         // Run main() and wait for it to finish
         let group = DispatchGroup()
@@ -188,5 +205,20 @@ class ViewController: UIViewController {
     
     @IBAction func deleteData(_ sender: Any){
         DataUtils.DeleteData()
+    }
+    
+    //table view関連セクション
+    //セルの個数を指定するデリゲートメソッド
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    //セルに値を設定するデータソースメソッド
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // セルを取得する
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "upcomingBusesCell", for: indexPath)
+        // セルに表示する値を設定する
+        cell.textLabel!.text = DateUtils.dateToStr(dateObj:
+            DateUtils.jsonToDateObj(jsonObj: upcomingBuses[indexPath.row]))
+        return cell
     }
 }
