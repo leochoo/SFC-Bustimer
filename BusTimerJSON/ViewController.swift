@@ -7,51 +7,15 @@
 import UIKit
 import SwiftyJSON
 
-func getNextBus(callback: @escaping (Date?)->()) {
-    // TO DO: change these to user inputs later
-    // var userWeek = ""
-    var _nextBus: Date? = nil
-    upcomingBuses = [] //初期化
-    
-    //variables for searching in bus for loop
-    var isNextBusFound = false
-    var upcomingBusesCount = 0;
-    
-    currUserTime = Date()
-    
-    
-    // Get correct userWeek data (weekend, sat, sun)
-    let arrayKeys = Array(holidaysJson.dictionaryValue.keys)
-    var todayFormatted = DateUtils.getDateTime()
-    todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
-    let userWeek = DateUtils.identifyDayType(today: todayFormatted, holidays: arrayKeys)
-    
-    
-    // Get the next bus information
-    let busSchedule = timetableJson[userDirection][userWeek].arrayValue
-    print(type(of:busSchedule))
-    let lastBus = busSchedule.last
-    let lastBusObj = DateUtils.jsonToDateObj(jsonObj: lastBus)
-    if lastBusObj! < currUserTime{
-        print("Last bus has left!")
-    }
-    else{
-        for bus in busSchedule{
-            let busTimeObj = DateUtils.jsonToDateObj(jsonObj: bus)
-            if busTimeObj! > currUserTime{
-                if(!isNextBusFound){
-                    print("Found next bus at", DateUtils.dateToStr(dateObj: busTimeObj))
-                    _nextBus = busTimeObj
-                    isNextBusFound = true
-                }
-                upcomingBuses.append(bus)
-                upcomingBusesCount += 1
-                if(upcomingBusesCount > 4) {break}
-            }
-        }
-    }
-    callback(_nextBus) // run callback function passed from main()
-}
+// global variables
+var currUserTime = Date()
+var nextBusTime: Date? = nil
+var userDirection = "sfcsho"
+var dept = "sfc"
+var arrv = "Shonandai"
+var timetableJson = JSON()
+var holidaysJson = JSON()
+var upcomingBuses: [JSON] = []
 
 extension TimeInterval {
     func stringFromTimeInterval() -> String {
@@ -63,15 +27,6 @@ extension TimeInterval {
     }
 }
 
-// global variables
-var currUserTime = Date()
-var nextBusTime: Date? = nil
-var userDirection = "sfcsho"
-var dept = "sfc"
-var arrv = "Shonandai"
-var timetableJson = JSON()
-var holidaysJson = JSON()
-var upcomingBuses: [JSON] = []
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var departure: UILabel!
@@ -82,45 +37,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet var changeLocation: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
+    
     var timer = Timer()
-    
-    func updateTimeLeft(busTime: Date?) {
-        if busTime == nil{
-            self.timeLeft.text = "no more bus"
-        }else{
-            currUserTime = Date()
-            //    print("current user time \(currUserTime)")
-            //    print("busTime \(busTime)")
-            //            print("4 nextBusTime: \(busTime)")
-            let elapsedTime = busTime?.timeIntervalSince(currUserTime)
-            if Double(elapsedTime ?? 0) > 0 {
-                //print("elap: \(elapsedTime) double: \(Double(elapsedTime ?? 0)) int: \(Int(elapsedTime ?? 0))")
-                self.timeLeft.text = elapsedTime?.stringFromTimeInterval()
-            } else{
-                main()
-            }
-        }
-    }
-    
-    func main() {
-        getNextBus() { (nextBusDateObj) -> () in
-            // no bus left
-            if nextBusDateObj == nil{
-                //                print("No BUS")
-                DispatchQueue.main.async {//ui update always uses main thread
-                    self.busInfo.text = "No bus!"
-                }
-            } else {
-                //show next bus
-                DispatchQueue.main.async {
-                    self.busInfo.numberOfLines = 0
-                    self.busInfo.text = DateUtils.dateToStr(dateObj: nextBusDateObj)
-                    nextBusTime = nextBusDateObj
-                    self.tableView.reloadData()
-                }
-            }
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,6 +73,91 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
+    func main() {
+        let nextBusDateObj = getNextBus()
+        // no bus left
+        if nextBusDateObj == nil{
+            //                print("No BUS")
+            DispatchQueue.main.async {//ui update always uses main thread
+                self.busInfo.text = "No bus!"
+            }
+        } else {
+            //show next bus
+            DispatchQueue.main.async {
+                self.busInfo.numberOfLines = 0
+                self.busInfo.text = DateUtils.dateToStr(dateObj: nextBusDateObj)
+                nextBusTime = nextBusDateObj
+                self.tableView.reloadData()
+                self.updateTimeLeft(busTime: nextBusTime)
+            }
+        }
+    }
+    
+    func getNextBus() -> (Date?){
+        // TO DO: change these to user inputs later
+        // var userWeek = ""
+        var _nextBus: Date? = nil
+        upcomingBuses = [] //初期化
+        
+        //variables for searching in bus for loop
+        var isNextBusFound = false
+        var upcomingBusesCount = 0;
+        
+        currUserTime = Date()
+        
+        
+        // Get correct userWeek data (weekend, sat, sun)
+        let arrayKeys = Array(holidaysJson.dictionaryValue.keys)
+        var todayFormatted = DateUtils.getDateTime()
+        todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
+        let userWeek = DateUtils.identifyDayType(today: todayFormatted, holidays: arrayKeys)
+        
+        
+        // Get the next bus information
+        let busSchedule = timetableJson[userDirection][userWeek].arrayValue
+        print(type(of:busSchedule))
+        let lastBus = busSchedule.last
+        let lastBusObj = DateUtils.jsonToDateObj(jsonObj: lastBus)
+        if lastBusObj! < currUserTime{
+            print("Last bus has left!")
+        }
+        else{
+            for bus in busSchedule{
+                let busTimeObj = DateUtils.jsonToDateObj(jsonObj: bus)
+                if busTimeObj! > currUserTime{
+                    if(!isNextBusFound){
+                        print("Found next bus at", DateUtils.dateToStr(dateObj: busTimeObj))
+                        _nextBus = busTimeObj
+                        isNextBusFound = true
+                    }
+                    upcomingBuses.append(bus)
+                    upcomingBusesCount += 1
+                    if(upcomingBusesCount > 4) {break}
+                }
+            }
+        }
+        return _nextBus
+    }
+    
+    
+    func updateTimeLeft(busTime: Date?) {
+        if busTime == nil{
+            self.timeLeft.text = "no more bus"
+        }else{
+            currUserTime = Date()
+            //    print("current user time \(currUserTime)")
+            //    print("busTime \(busTime)")
+            //            print("4 nextBusTime: \(busTime)")
+            let elapsedTime = busTime?.timeIntervalSince(currUserTime)
+            if Double(elapsedTime ?? 0) > 0 {
+                //print("elap: \(elapsedTime) double: \(Double(elapsedTime ?? 0)) int: \(Int(elapsedTime ?? 0))")
+                self.timeLeft.text = elapsedTime?.stringFromTimeInterval()
+            } else{
+                main()
+            }
+        }
+    }
+    
     @IBAction func changeDirection(_ sender: Any) {
         
         let temp = self.departure.text
@@ -172,7 +175,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
         } else if userDirection == "tsujisfc"{
             userDirection = "sfctsuji"
-        } 
+        }
         // re-calculate the next bus
         main()
         
@@ -216,7 +219,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // セルを取得する
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "upcomingBusesCell", for: indexPath)
-        // セルに表示する値を設定する
+        // indexPath.row番目のセルに表示する値を設定する
         cell.textLabel!.text = DateUtils.dateToStr(dateObj:
             DateUtils.jsonToDateObj(jsonObj: upcomingBuses[indexPath.row]))
         return cell
