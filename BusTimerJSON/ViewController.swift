@@ -50,34 +50,31 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         // Run main() and wait for it to finish
         let group = DispatchGroup()
-        
         group.enter()
         main()
         group.leave()
         
-        // execute the timer only after
+        // execute the timer only after main() finishes
         group.notify(queue: .main){
             if self.timer.isValid{
                 self.timer.invalidate()
                 self.timer = Timer()
             }
-            
-            //            print("2 nextBusTime: \(nextBusTime)")
-            //call every 1 sec
+            // update the time remaining
             self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                //                print("3 nextBusTime: \(nextBusTime)")
                 self.updateTimeLeft(busTime: nextBusTime)
             }
         }
         
     }
     
+    
     func main() {
         let nextBusDateObj = getNextBus()
         // no bus left
         if nextBusDateObj == nil{
-            //                print("No BUS")
-            DispatchQueue.main.async {//ui update always uses main thread
+            // UI update always uses main thread
+            DispatchQueue.main.async {
                 self.busInfo.text = "No bus!"
             }
         } else {
@@ -93,39 +90,35 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func getNextBus() -> (Date?){
-        // TO DO: change these to user inputs later
-        // var userWeek = ""
-        var _nextBus: Date? = nil
+        // get new current time
+        currUserTime = Date()
+        
+        var nextBus: Date? = nil
         upcomingBuses = [] //初期化
         
         //variables for searching in bus for loop
         var isNextBusFound = false
         var upcomingBusesCount = 0;
         
-        currUserTime = Date()
+        // userWeek = weekend | sat | sun)
+        let userWeek = DateUtils.getUserWeek()
         
-        
-        // Get correct userWeek data (weekend, sat, sun)
-        let arrayKeys = Array(holidaysJson.dictionaryValue.keys)
-        var todayFormatted = DateUtils.getDateTime()
-        todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
-        let userWeek = DateUtils.identifyDayType(today: todayFormatted, holidays: arrayKeys)
-        
-        
-        // Get the next bus information
+        // Get the right schedule from JSON
         let busSchedule = timetableJson[userDirection][userWeek].arrayValue
+        // check for the last bus
         let lastBus = busSchedule.last
         let lastBusObj = DateUtils.jsonToDateObj(jsonObj: lastBus)
         if lastBusObj! < currUserTime{
             print("Last bus has left!")
         }
         else{
+            // find the next bus
             for bus in busSchedule{
                 let busTimeObj = DateUtils.jsonToDateObj(jsonObj: bus)
                 if busTimeObj! > currUserTime{
                     if(!isNextBusFound){
                         print("Found next bus at", DateUtils.dateToStr(dateObj: busTimeObj))
-                        _nextBus = busTimeObj
+                        nextBus = busTimeObj
                         isNextBusFound = true
                     }
                     upcomingBuses.append(bus)
@@ -134,7 +127,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
         }
-        return _nextBus
+        return nextBus
     }
     
     
@@ -143,12 +136,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.timeLeft.text = "no more bus"
         }else{
             currUserTime = Date()
-            //    print("current user time \(currUserTime)")
-            //    print("busTime \(busTime)")
-            //            print("4 nextBusTime: \(busTime)")
             let elapsedTime = busTime?.timeIntervalSince(currUserTime)
             if Double(elapsedTime ?? 0) > 0 {
-                //print("elap: \(elapsedTime) double: \(Double(elapsedTime ?? 0)) int: \(Int(elapsedTime ?? 0))")
                 self.timeLeft.text = elapsedTime?.stringFromTimeInterval()
             } else{
                 main()

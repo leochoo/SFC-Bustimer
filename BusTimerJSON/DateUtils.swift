@@ -22,7 +22,12 @@ class DateUtils{
         //    print("getDateTime:",today)
         return today //return 2019/01/05
     }
-    
+    class func getUserWeek() -> String {
+        let arrayKeys = Array(holidaysJson.dictionaryValue.keys)
+        var todayFormatted = DateUtils.getDateTime()
+        todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
+        return DateUtils.identifyDayType(today: todayFormatted, holidays: arrayKeys)
+    }
     class func identifyDayType(today:String, holidays:[String]) -> String{
         let dayOfWeek = getDayOfWeek()
         if(isHoliday(today: today, holidays: holidays)){

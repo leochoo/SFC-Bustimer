@@ -81,3 +81,4 @@ Pods/Target Support Files/Eureka/Eureka-umbrella.h
 Pods/Target Support Files/Eureka/Eureka.modulemap
 Pods/Target Support Files/Eureka/Eureka.xcconfig
 Pods/Target Support Files/Eureka/Info.plist
+*xcworkspace/xcuserdata/*
