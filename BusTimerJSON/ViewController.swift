@@ -74,6 +74,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //設定画面から戻るとき再描画
+        initLocation()
+        main()
+    }
+    
     func main() {
         let nextBusDateObj = getNextBus()
         // no bus left

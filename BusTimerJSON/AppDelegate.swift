@@ -23,8 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if(launchedBefore == true) {
             print("already launched")
             //動作確認用のリセット処理
-            UserDefaults.standard.set(false, forKey: "launchedBefore")
-            UserDefaults.standard.set("Shonandai", forKey: "location")
+            //UserDefaults.standard.set(false, forKey: "launchedBefore")
             
         } else {
             print("first launch")
@@ -33,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //初回起動処理
             DataUtils.saveData()
             sleep(2)
+            UserDefaults.standard.set("Shonandai", forKey: "location")
         }
         return true
     }
