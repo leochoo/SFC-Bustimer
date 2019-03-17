@@ -220,7 +220,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //table view関連セクション
     //セルの個数を指定するデリゲートメソッド
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return upcomingBuses.count
     }
     //セルに値を設定するデータソースメソッド
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
