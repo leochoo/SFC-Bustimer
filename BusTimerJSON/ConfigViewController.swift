@@ -13,15 +13,21 @@ class ConfigViewController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let location = UserDefaults.standard.string(forKey: "location")
         form
             +++ Section("Config")
             <<< ActionSheetRow<String>("") {
                 $0.title = "使用駅"
                 $0.selectorTitle = "駅を選択"
-                $0.options = ["湘南台","辻堂"]
-                $0.value = "湘南台"    // 初期選択項目
+                $0.options = ["Shonandai","Tsujido"]
+                $0.value = location    // 初期選択項目
                 }.onChange{row in
                     print(row.value as Any)
+                    if(row.value == "Shonandai"){
+                        UserDefaults.standard.set("Shonandai", forKey: "location")
+                    } else if(row.value == "Tsujido"){
+                        UserDefaults.standard.set("Tsujido", forKey: "location")
+                    }
             }
             <<< ButtonRow { row in
                 row.title = "時刻表データの更新"
