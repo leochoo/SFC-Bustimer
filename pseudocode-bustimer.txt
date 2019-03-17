@@ -1,0 +1,88 @@
+
+
+# More detailed pseudocode
+
+
+## global variables
+nextBus
+direction
+
+## main() and updateTL() shares the same global variable nextBus
+    main() only works to fetch the next bus data and update nextBus
+    updateTL() only fetches the nextBus info and updates the UI.
+    Once timeLeft == 0, main() will fetch the new nextBus.
+    After nextBus gets updated, updateTL will update the UI with the new data.
+
+    updateTL will be keep running as long as the app is alive.
+
+    nextBus object will also change when changeDirection() is pressed.
+
+
+## updateTL() - runs every 1 second to show the data depending on nextBus fetched from main()
+
+## main() - when ran, it gets the next five buses depending on the direction and current time
+
+## changeDirection() - it reverses the value of the global variable direction
+
+
+nextBus = [BusObject]
+direction = ""
+
+if viewDidLoad(){
+
+
+    main(direction){
+        nextFiveBuses: [BusObjects] = getNextBuses(direction)
+
+        for bus in nextFiveBuses{
+            displayInTableView(bus)
+        }
+        nextBus = nextFiveBuses[0]
+    }
+
+    updateTL(){
+        for every second{
+            timeLeft = timeBetween(nextBus.time - currTime)
+            display(timeLeft)
+            if timeLeft == 00:00{
+                main(direction)
+            }
+        }
+    }   
+}
+
+button func changeDirection(){
+    reverse the global variable direction
+    main(direction)
+}
+
+
+
+    
+            
+
+
+
+
+
+----------
+
+
+# simple pseudocode
+
+if viewDidLoad(){
+
+    main(){
+        Show next 5 buses
+        Show and update timeLeft every 1 second
+        if timeLeft == 00:
+            update the list to show the new next buses
+            show time left with the new next bus
+
+    }
+}
+
+if changeDirectionPressed(){
+    Reverse UITexts for depature and arrival
+    Show next buses in the opposite direction
+}
