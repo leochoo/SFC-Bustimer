@@ -11,8 +11,6 @@ import SwiftyJSON
 var currUserTime = Date()
 var nextBusTime: Date? = nil
 var userDirection = "sfcsho"
-var dept = "sfc"
-var arrv = "Shonandai"
 var timetableJson = JSON()
 var holidaysJson = JSON()
 var upcomingBuses: [JSON] = []
@@ -47,6 +45,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         //TO DO
         //ローカルデータがない場合の処理
+        
+        //TO DO
+        //dept arrv dirc初期化
+        initLocation()
         
         // Run main() and wait for it to finish
         let group = DispatchGroup()
@@ -92,7 +94,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    func getNextBus() -> (Date?){
+    func getNextBus() -> (Date?) {
         // get new current time
         currUserTime = Date()
         
@@ -147,6 +149,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             } else{
                 main()
             }
+        }
+    }
+    
+    func initLocation() {
+        let location = UserDefaults.standard.string(forKey: "location")
+        if(location == "Shonandai"){
+            self.departure.text = "SFC"
+            self.arrival.text = "Shonandai"
+            userDirection = "sfcsho"
+        } else if (location == "Tsujido"){
+            self.departure.text = "SFC"
+            self.arrival.text = "Tsujido"
+            userDirection = "sfctsuji"
         }
     }
     

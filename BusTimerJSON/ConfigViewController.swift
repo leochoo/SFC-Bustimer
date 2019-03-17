@@ -22,6 +22,11 @@ class ConfigViewController: FormViewController {
                 $0.value = "湘南台"    // 初期選択項目
                 }.onChange{row in
                     print(row.value as Any)
+                    if(row.value == "湘南台"){
+                        UserDefaults.standard.set("Shonandai", forKey: "location")
+                    } else if(row.value == "辻堂"){
+                        UserDefaults.standard.set("Tsujido", forKey: "location")
+                    }
             }
             <<< ButtonRow { row in
                 row.title = "時刻表データの更新"
