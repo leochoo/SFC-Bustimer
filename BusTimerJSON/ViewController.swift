@@ -90,8 +90,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func getNextBus() -> (Date?){
-        // TO DO: change these to user inputs later
-        // var userWeek = ""
+        // get new current time
+        currUserTime = Date()
         var nextBus: Date? = nil
         upcomingBuses = [] //初期化
         
@@ -99,10 +99,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         var isNextBusFound = false
         var upcomingBusesCount = 0;
         
-        currUserTime = Date()
+        
+  
         // userWeek = weekend | sat | sun)
         let userWeek = DateUtils.getUserWeek()
-        
         // Get the right schedule from JSON
         let busSchedule = timetableJson[userDirection][userWeek].arrayValue
         // check for the last bus
