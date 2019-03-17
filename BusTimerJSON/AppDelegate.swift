@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             //初回起動処理
             DataUtils.saveData()
-            sleep(1)
+            sleep(2)
         }
         return true
     }

@@ -34,7 +34,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var timeLeft: UILabel!
     @IBOutlet weak var changeDirection: UIButton!
     @IBOutlet weak var busInfo: UILabel!
-    @IBOutlet var changeLocation: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     
@@ -115,7 +114,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         // Get the next bus information
         let busSchedule = timetableJson[userDirection][userWeek].arrayValue
-        print(type(of:busSchedule))
         let lastBus = busSchedule.last
         let lastBusObj = DateUtils.jsonToDateObj(jsonObj: lastBus)
         if lastBusObj! < currUserTime{
