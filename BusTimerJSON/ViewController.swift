@@ -93,26 +93,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func getNextBus() -> (Date?){
-        // TO DO: change these to user inputs later
-        // var userWeek = ""
-        var _nextBus: Date? = nil
+        // get new current time
+        currUserTime = Date()
+        
+        var nextBus: Date? = nil
         upcomingBuses = [] //初期化
         
         //variables for searching in bus for loop
         var isNextBusFound = false
         var upcomingBusesCount = 0;
         
-        currUserTime = Date()
+        // userWeek = weekend | sat | sun)
+        let userWeek = DateUtils.getUserWeek()
         
-        
-        // Get correct userWeek data (weekend, sat, sun)
-        let arrayKeys = Array(holidaysJson.dictionaryValue.keys)
-        var todayFormatted = DateUtils.getDateTime()
-        todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
-        let userWeek = DateUtils.identifyDayType(today: todayFormatted, holidays: arrayKeys)
-        
-        
-        // Get the next bus information
+        // // Get the right schedule from JSON
         let busSchedule = timetableJson[userDirection][userWeek].arrayValue
         let lastBus = busSchedule.last
         let lastBusObj = DateUtils.jsonToDateObj(jsonObj: lastBus)
@@ -125,7 +119,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 if busTimeObj! > currUserTime{
                     if(!isNextBusFound){
                         print("Found next bus at", DateUtils.dateToStr(dateObj: busTimeObj))
-                        _nextBus = busTimeObj
+                        nextBus = busTimeObj
                         isNextBusFound = true
                     }
                     upcomingBuses.append(bus)
@@ -134,7 +128,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
         }
-        return _nextBus
+        return nextBus
     }
     
     
