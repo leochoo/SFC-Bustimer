@@ -50,6 +50,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //dept arrv dirc初期化
         initLocation()
         
+        //テーブルビューにカスタムセルを登録
+        tableView.register (UINib(nibName: "BusCell", bundle: nil),forCellReuseIdentifier:"customCell")
+        
         // Run main() and wait for it to finish
         let group = DispatchGroup()
         
@@ -88,6 +91,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             //                print("No BUS")
             DispatchQueue.main.async {//ui update always uses main thread
                 self.busInfo.text = "No bus!"
+            self.tableView.reloadData()
+            self.updateTimeLeft(busTime: nextBusTime)
             }
         } else {
             //show next bus
@@ -110,7 +115,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         //variables for searching in bus for loop
         var isNextBusFound = false
-        var upcomingBusesCount = 0;
         
         // userWeek = weekend | sat | sun)
         let userWeek = DateUtils.getUserWeek()
@@ -132,8 +136,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         isNextBusFound = true
                     }
                     upcomingBuses.append(bus)
-                    upcomingBusesCount += 1
-                    if(upcomingBusesCount > 4) {break}
                 }
             }
         }
@@ -231,11 +233,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     //セルに値を設定するデータソースメソッド
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // セルを取得する
-        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "upcomingBusesCell", for: indexPath)
-        // indexPath.row番目のセルに表示する値を設定する
-        cell.textLabel!.text = DateUtils.dateToStr(dateObj:
-            DateUtils.jsonToDateObj(jsonObj: upcomingBuses[indexPath.row]))
+        // セルのインスタンス作成
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! BusCell
+        let bus :JSON = upcomingBuses[indexPath.row]
+        
+        let busTimeText = String(DateUtils.dateToStr(dateObj:
+            DateUtils.jsonToDateObj(jsonObj: bus)).suffix(5))
+        
+        var imageName = "normal-bus-icon"
+        if(bus["type"].stringValue == "t"){
+            imageName = "twin-bus-icon"
+        } else {
+            imageName = "normal-bus-icon"
+        }
+        
+        var busDetailArray: [String] = []
+        if(bus["rotary"].stringValue == "true"){
+            busDetailArray.append("ロータリー発")
+        }
+        if(bus["type"].stringValue == "s"){
+            busDetailArray.append("笹久保経由")
+        }
+        let busDetailText = busDetailArray.joined(separator: " ")
+        cell.show(busTimeText: busTimeText, imageName: imageName, busDetailText: busDetailText)
+
         return cell
     }
 }
