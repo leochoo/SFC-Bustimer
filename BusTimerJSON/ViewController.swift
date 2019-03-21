@@ -33,6 +33,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var changeDirection: UIButton!
     @IBOutlet weak var busInfo: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var busListButton: UIButton!
     
     
     var timer = Timer()
@@ -46,9 +47,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //TO DO
         //ローカルデータがない場合の処理
         
-        //TO DO
         //dept arrv dirc初期化
         initLocation()
+        
+        busListButton.isHidden = true
         
         //テーブルビューにカスタムセルを登録
         tableView.register (UINib(nibName: "BusCell", bundle: nil),forCellReuseIdentifier:"customCell")
@@ -90,9 +92,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if nextBusDateObj == nil{
             //                print("No BUS")
             DispatchQueue.main.async {//ui update always uses main thread
-                self.busInfo.text = "No bus!"
-            self.tableView.reloadData()
-            self.updateTimeLeft(busTime: nextBusTime)
+                self.busInfo.text = ""
+                nextBusTime = nil
+                self.updateTimeLeft(busTime: nextBusTime)
+                self.tableView.reloadData()
             }
         } else {
             //show next bus
@@ -145,7 +148,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func updateTimeLeft(busTime: Date?) {
         if busTime == nil{
-            self.timeLeft.text = "no more bus"
+            self.timeLeft.text = "No Bus!"
         }else{
             currUserTime = Date()
             //    print("current user time \(currUserTime)")
