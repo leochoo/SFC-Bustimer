@@ -102,6 +102,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        // ステータスバーの文字色を白で指定
+        return UIStatusBarStyle.lightContent
+    }
+    
     func main() {
         let nextBusDateObj = getNextBus()
         // no bus left
