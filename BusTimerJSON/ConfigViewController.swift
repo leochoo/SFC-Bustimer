@@ -32,8 +32,8 @@ class ConfigViewController: FormViewController {
             <<< ButtonRow { row in
                 row.title = "時刻表データの更新"
                 }.onCellSelection{cell,row in
-                    DataUtils.displayAlert(viewController: self)
                     DataUtils.saveData()
+                    DataUtils.displayAlert(viewController: self)
             }
         // Do any additional setup after loading the view.
     }

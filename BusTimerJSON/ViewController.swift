@@ -33,52 +33,73 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var changeDirection: UIButton!
     @IBOutlet weak var busInfo: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var busListButton: UIButton!
     
     
     var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //UserDefaultsのデータをjson化
-        timetableJson = DataUtils.parseTimetableJson()
-        holidaysJson = DataUtils.parseHolidaysJson()
-        
-        //TO DO
-        //ローカルデータがない場合の処理
-        
-        //TO DO
-        //dept arrv dirc初期化
-        initLocation()
-        
-        // Run main() and wait for it to finish
-        let group = DispatchGroup()
-        
-        group.enter()
-        main()
-        group.leave()
-        
-        // execute the timer only after
-        group.notify(queue: .main){
-            if self.timer.isValid{
-                self.timer.invalidate()
-                self.timer = Timer()
-            }
+        busListButton.isHidden = true
+        //データがないときエラー処理
+        let holidaysData = UserDefaults.standard.object(forKey: "holidays")
+        let timetableData = UserDefaults.standard.object(forKey: "timetable")
+        if(holidaysData == nil
+            || timetableData == nil){
+            DataUtils.noDataAlert(viewController: self)
+            UserDefaults.standard.set(false, forKey: "launchedBefore")
+        } else {
+            //UserDefaultsのデータをjson化
+            timetableJson = DataUtils.parseTimetableJson()
+            holidaysJson = DataUtils.parseHolidaysJson()
             
-            //            print("2 nextBusTime: \(nextBusTime)")
-            //call every 1 sec
-            self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                //                print("3 nextBusTime: \(nextBusTime)")
-                self.updateTimeLeft(busTime: nextBusTime)
+            //dept arrv dirc初期化
+            initLocation()
+            
+            //テーブルビューにカスタムセルを登録
+            tableView.register (UINib(nibName: "BusCell", bundle: nil),forCellReuseIdentifier:"customCell")
+            
+            // Run main() and wait for it to finish
+            let group = DispatchGroup()
+            
+            group.enter()
+            main()
+            group.leave()
+            
+            // execute the timer only after
+            group.notify(queue: .main){
+                if self.timer.isValid{
+                    self.timer.invalidate()
+                    self.timer = Timer()
+                }
+                
+                //            print("2 nextBusTime: \(nextBusTime)")
+                //call every 1 sec
+                self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                    //                print("3 nextBusTime: \(nextBusTime)")
+                    self.updateTimeLeft(busTime: nextBusTime)
+                }
             }
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //設定画面から戻るとき再描画
-        initLocation()
-        main()
+        //データがないときエラー処理
+        let holidaysData = UserDefaults.standard.object(forKey: "holidays")
+        let timetableData = UserDefaults.standard.object(forKey: "timetable")
+        if(holidaysData == nil
+            || timetableData == nil){
+            DataUtils.noDataAlert(viewController: self)
+            UserDefaults.standard.set(false, forKey: "launchedBefore")
+        } else {
+            //UserDefaultsのデータをjson化
+            timetableJson = DataUtils.parseTimetableJson()
+            holidaysJson = DataUtils.parseHolidaysJson()
+            initLocation()
+            main()
+        }
     }
     
     func main() {
@@ -87,7 +108,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if nextBusDateObj == nil{
             //                print("No BUS")
             DispatchQueue.main.async {//ui update always uses main thread
-                self.busInfo.text = "No bus!"
+                self.busInfo.text = ""
+                nextBusTime = nil
+                self.updateTimeLeft(busTime: nextBusTime)
+                self.tableView.reloadData()
             }
         } else {
             //show next bus
@@ -110,7 +134,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         //variables for searching in bus for loop
         var isNextBusFound = false
-        var upcomingBusesCount = 0;
         
         // userWeek = weekend | sat | sun)
         let userWeek = DateUtils.getUserWeek()
@@ -132,8 +155,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         isNextBusFound = true
                     }
                     upcomingBuses.append(bus)
-                    upcomingBusesCount += 1
-                    if(upcomingBusesCount > 4) {break}
                 }
             }
         }
@@ -143,7 +164,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func updateTimeLeft(busTime: Date?) {
         if busTime == nil{
-            self.timeLeft.text = "no more bus"
+            self.timeLeft.text = "No Bus!"
         }else{
             currUserTime = Date()
             //    print("current user time \(currUserTime)")
@@ -231,11 +252,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     //セルに値を設定するデータソースメソッド
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // セルを取得する
-        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "upcomingBusesCell", for: indexPath)
-        // indexPath.row番目のセルに表示する値を設定する
-        cell.textLabel!.text = DateUtils.dateToStr(dateObj:
-            DateUtils.jsonToDateObj(jsonObj: upcomingBuses[indexPath.row]))
+        // セルのインスタンス作成
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! BusCell
+        let bus :JSON = upcomingBuses[indexPath.row]
+        
+        let busTimeText = String(DateUtils.dateToStr(dateObj:
+            DateUtils.jsonToDateObj(jsonObj: bus)).suffix(5))
+        
+        var imageName = "normal-bus-icon"
+        if(bus["type"].stringValue == "t"){
+            imageName = "twin-bus-icon"
+        } else {
+            imageName = "normal-bus-icon"
+        }
+        
+        var busDetailArray: [String] = []
+        if(bus["rotary"].stringValue == "true"){
+            busDetailArray.append("ロータリー発")
+        }
+        if(bus["type"].stringValue == "s"){
+            busDetailArray.append("笹久保経由")
+        }
+        let busDetailText = busDetailArray.joined(separator: " ")
+        cell.show(busTimeText: busTimeText, imageName: imageName, busDetailText: busDetailText)
+        
         return cell
     }
 }
