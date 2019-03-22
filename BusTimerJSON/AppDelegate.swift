@@ -19,12 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         // UserDefaultsのインスタンスを作成
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
-        
         if(launchedBefore == true) {
             print("already launched")
             //動作確認用のリセット処理
             //UserDefaults.standard.set(false, forKey: "launchedBefore")
-            
         } else {
             print("first launch")
             //launchedBeforeをtrue(起動済み)に更新

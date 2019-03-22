@@ -40,50 +40,64 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //UserDefaultsのデータをjson化
-        timetableJson = DataUtils.parseTimetableJson()
-        holidaysJson = DataUtils.parseHolidaysJson()
-        
-        //TO DO
-        //ローカルデータがない場合の処理
-        
-        //dept arrv dirc初期化
-        initLocation()
-        
         busListButton.isHidden = true
-        
-        //テーブルビューにカスタムセルを登録
-        tableView.register (UINib(nibName: "BusCell", bundle: nil),forCellReuseIdentifier:"customCell")
-        
-        // Run main() and wait for it to finish
-        let group = DispatchGroup()
-        
-        group.enter()
-        main()
-        group.leave()
-        
-        // execute the timer only after
-        group.notify(queue: .main){
-            if self.timer.isValid{
-                self.timer.invalidate()
-                self.timer = Timer()
-            }
+        //データがないときエラー処理
+        let holidaysData = UserDefaults.standard.object(forKey: "holidays")
+        let timetableData = UserDefaults.standard.object(forKey: "timetable")
+        if(holidaysData == nil
+            || timetableData == nil){
+            DataUtils.noDataAlert(viewController: self)
+        } else {
+            //UserDefaultsのデータをjson化
+            timetableJson = DataUtils.parseTimetableJson()
+            holidaysJson = DataUtils.parseHolidaysJson()
             
-            //            print("2 nextBusTime: \(nextBusTime)")
-            //call every 1 sec
-            self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                //                print("3 nextBusTime: \(nextBusTime)")
-                self.updateTimeLeft(busTime: nextBusTime)
+            //dept arrv dirc初期化
+            initLocation()
+            
+            //テーブルビューにカスタムセルを登録
+            tableView.register (UINib(nibName: "BusCell", bundle: nil),forCellReuseIdentifier:"customCell")
+            
+            // Run main() and wait for it to finish
+            let group = DispatchGroup()
+            
+            group.enter()
+            main()
+            group.leave()
+            
+            // execute the timer only after
+            group.notify(queue: .main){
+                if self.timer.isValid{
+                    self.timer.invalidate()
+                    self.timer = Timer()
+                }
+                
+                //            print("2 nextBusTime: \(nextBusTime)")
+                //call every 1 sec
+                self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                    //                print("3 nextBusTime: \(nextBusTime)")
+                    self.updateTimeLeft(busTime: nextBusTime)
+                }
             }
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //設定画面から戻るとき再描画
-        initLocation()
-        main()
+        //データがないときエラー処理
+        let holidaysData = UserDefaults.standard.object(forKey: "holidays")
+        let timetableData = UserDefaults.standard.object(forKey: "timetable")
+        if(holidaysData == nil
+            || timetableData == nil){
+            DataUtils.noDataAlert(viewController: self)
+        } else {
+            //UserDefaultsのデータをjson化
+            timetableJson = DataUtils.parseTimetableJson()
+            holidaysJson = DataUtils.parseHolidaysJson()
+            initLocation()
+            main()
+        }
     }
     
     func main() {
@@ -259,7 +273,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         let busDetailText = busDetailArray.joined(separator: " ")
         cell.show(busTimeText: busTimeText, imageName: imageName, busDetailText: busDetailText)
-
+        
         return cell
     }
 }

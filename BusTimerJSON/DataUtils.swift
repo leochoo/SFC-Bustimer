@@ -14,7 +14,7 @@ class DataUtils{
         // Get bus timetable
         let BusJsonUrlString = "https://api.myjson.com/bins/1brbhu" // almost final data with type 19 added.
         // let BusJsonUrlString = "https://api.myjson.com/bins/10zfwo" // before type 2
-        guard let busUrl = URL(string: BusJsonUrlString) else {return}
+        guard let busUrl = URL(string: BusJsonUrlString) else { return }
         URLSession.shared.dataTask(with: busUrl) { (data, response, err) in
             guard let data = data else { return }
             // storing data directly without parsing
@@ -22,7 +22,7 @@ class DataUtils{
             }.resume() //end of url session
         
         let holidaysJsonUrlString = "https://holidays-jp.github.io/api/v1/date.json"
-        guard let dateUrl = URL(string: holidaysJsonUrlString) else {return}
+        guard let dateUrl = URL(string: holidaysJsonUrlString) else { return }
         URLSession.shared.dataTask(with: dateUrl) { (data, response, err) in
             guard let data = data else { return }
             UserDefaults.standard.set(data, forKey: "holidays")
@@ -98,5 +98,26 @@ class DataUtils{
         alert.addAction(okayButton)
 
         viewController.present(alert, animated: true, completion: nil)
+    }
+    
+    class func noDataAlert(viewController: UIViewController){
+        //部品のアラートを作る
+        let alertController = UIAlertController(title: "時刻表データがありません！", message: "設定画面からデータをダウンロードしてください。", preferredStyle: UIAlertController.Style.alert)
+        //OKボタン追加
+        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler:{(action: UIAlertAction!) in
+            
+            //アラートが消えるのと画面遷移が重ならないように0.5秒後に画面遷移するようにしてる
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                // 0.5秒後に実行したい処理
+                viewController.performSegue(withIdentifier: "toConfig", sender: nil)
+            }
+        }
+        )
+        
+        alertController.addAction(okAction)
+        
+        //アラートを表示する
+        viewController.present(alertController, animated: true, completion: nil)
+
     }
 }

@@ -61,7 +61,7 @@
                                 </constraints>
                                 <state key="normal" image="settings-icon"/>
                                 <connections>
-                                    <segue destination="2Ka-LY-Kvi" kind="show" id="YLM-BA-XFn"/>
+                                    <segue destination="2Ka-LY-Kvi" kind="show" identifier="toConfig" id="YLM-BA-XFn"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="to" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N8X-iz-aBv">
