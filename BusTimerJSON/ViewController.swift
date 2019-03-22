@@ -47,6 +47,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if(holidaysData == nil
             || timetableData == nil){
             DataUtils.noDataAlert(viewController: self)
+            UserDefaults.standard.set(false, forKey: "launchedBefore")
         } else {
             //UserDefaultsのデータをjson化
             timetableJson = DataUtils.parseTimetableJson()
@@ -91,6 +92,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if(holidaysData == nil
             || timetableData == nil){
             DataUtils.noDataAlert(viewController: self)
+            UserDefaults.standard.set(false, forKey: "launchedBefore")
         } else {
             //UserDefaultsのデータをjson化
             timetableJson = DataUtils.parseTimetableJson()
