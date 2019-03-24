@@ -272,7 +272,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         var busDetailArray: [String] = []
-        if(bus["rotary"].stringValue == "true"){
+        if(bus["rotary"].stringValue == "true" || bus["type"].stringValue == "19"){
             busDetailArray.append("ロータリー発")
         }
         if(bus["type"].stringValue == "s"){
