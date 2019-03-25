@@ -79,6 +79,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     //                print("3 nextBusTime: \(nextBusTime)")
                     self.updateTimeLeft(busTime: nextBusTime)
                 }
+                RunLoop.main.add(self.timer, forMode:RunLoop.Mode.common)
             }
         }
     }
