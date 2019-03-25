@@ -10,6 +10,7 @@
 		46230612B0E30C15EC578A34 /* Pods_BusTimerJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CEDF55CBE015BA7001F22A /* Pods_BusTimerJSON.framework */; };
 		B60B391F2243896F008182D9 /* BusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60B391D2243896F008182D9 /* BusCell.swift */; };
 		B60B39202243896F008182D9 /* BusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B60B391E2243896F008182D9 /* BusCell.xib */; };
+		B639F2562248D6B00075F416 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B639F2552248D6B00075F416 /* AboutViewController.swift */; };
 		B6BC643F223C0720002C4085 /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BC643E223C0720002C4085 /* ConfigViewController.swift */; };
 		B6F9D2042238C90500C00484 /* DataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9D2032238C90500C00484 /* DataUtils.swift */; };
 		B6F9D2062238D8DF00C00484 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9D2052238D8DF00C00484 /* DateUtils.swift */; };
@@ -26,6 +27,7 @@
 		627335DB332739D98C23468B /* Pods-BusTimerJSON.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BusTimerJSON.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BusTimerJSON/Pods-BusTimerJSON.debug.xcconfig"; sourceTree = "<group>"; };
 		B60B391D2243896F008182D9 /* BusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusCell.swift; sourceTree = "<group>"; };
 		B60B391E2243896F008182D9 /* BusCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BusCell.xib; sourceTree = "<group>"; };
+		B639F2552248D6B00075F416 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		B6BC643E223C0720002C4085 /* ConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
 		B6F9D2032238C90500C00484 /* DataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUtils.swift; sourceTree = "<group>"; };
 		B6F9D2052238D8DF00C00484 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				B60B391E2243896F008182D9 /* BusCell.xib */,
 				B6F9D2032238C90500C00484 /* DataUtils.swift */,
 				B6F9D2052238D8DF00C00484 /* DateUtils.swift */,
+				B639F2552248D6B00075F416 /* AboutViewController.swift */,
 				D755CA9D218448F10069FDE3 /* Main.storyboard */,
 				B6BC643E223C0720002C4085 /* ConfigViewController.swift */,
 				D755CAA3218448F30069FDE3 /* Assets.xcassets */,
@@ -235,6 +238,7 @@
 				B6F9D2062238D8DF00C00484 /* DateUtils.swift in Sources */,
 				D755CA9C218448F10069FDE3 /* ViewController.swift in Sources */,
 				B60B391F2243896F008182D9 /* BusCell.swift in Sources */,
+				B639F2562248D6B00075F416 /* AboutViewController.swift in Sources */,
 				D755CA9A218448F10069FDE3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -383,13 +387,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YN99DPPVC8;
+				DEVELOPMENT_TEAM = UGY86BQ36T;
 				INFOPLIST_FILE = BusTimerJSON/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = keio.haginoken.BusTimerJSON;
+				PRODUCT_BUNDLE_IDENTIFIER = keio.haginoken.BusTimer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -402,13 +406,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YN99DPPVC8;
+				DEVELOPMENT_TEAM = UGY86BQ36T;
 				INFOPLIST_FILE = BusTimerJSON/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = keio.haginoken.BusTimerJSON;
+				PRODUCT_BUNDLE_IDENTIFIER = keio.haginoken.BusTimer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

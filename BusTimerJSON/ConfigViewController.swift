@@ -35,6 +35,12 @@ class ConfigViewController: FormViewController {
                     DataUtils.saveData()
                     DataUtils.displayAlert(viewController: self)
             }
+            +++ Section("About")
+            <<< ButtonRow { row in
+                row.title = "SFC Bustimerについて"
+                }.onCellSelection{cell,row in
+                    self.performSegue(withIdentifier: "toAbout", sender: nil)
+                }
         // Do any additional setup after loading the view.
     }
     
