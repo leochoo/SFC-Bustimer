@@ -156,7 +156,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 let busTimeObj = DateUtils.jsonToDateObj(jsonObj: bus)
                 if busTimeObj! > currUserTime{
                     if(!isNextBusFound){
-                        print("Found next bus at", DateUtils.dateToStr(dateObj: busTimeObj))
+//                        print("Found next bus at", DateUtils.dateToStr(dateObj: busTimeObj))
                         nextBus = busTimeObj
                         isNextBusFound = true
                     }

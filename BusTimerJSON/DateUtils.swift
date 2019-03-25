@@ -31,18 +31,18 @@ class DateUtils{
     class func identifyDayType(today:String, holidays:[String]) -> String{
         let dayOfWeek = getDayOfWeek()
         if(isHoliday(today: today, holidays: holidays)){
-            print("Holiday スケジュール")
+//            print("Holiday スケジュール")
             //        return "holiday"
             return "sun"
         } else if(dayOfWeek == 1){
-            print("Sunday スケジュール")
+//            print("Sunday スケジュール")
             return "sun"
         } else if(dayOfWeek == 7){
-            print("Saturday スケジュール")
+//            print("Saturday スケジュール")
             return "sat"
             //        return "saturday"
         } else {
-            print("Weekday スケジュール")
+//            print("Weekday スケジュール")
             return "weekday"
         }
     }

@@ -33,7 +33,7 @@ class DataUtils{
         if let timetableData = UserDefaults.standard.data(forKey: "timetable"){
             do{
                 let json = try JSON(data: timetableData)
-                print(json)
+//                print(json)
             } catch let jsonErr {
                 print("Error serializing json:", jsonErr)
             }
@@ -63,7 +63,7 @@ class DataUtils{
         if let holidaysData = UserDefaults.standard.data(forKey: "holidays"){
             do{
                 json = try JSON(data: holidaysData)
-                print(json)
+//                print(json)
             } catch let jsonErr {
                 print("Error serializing json:", jsonErr)
             }
@@ -78,7 +78,7 @@ class DataUtils{
         if let timetableData = UserDefaults.standard.data(forKey: "timetable"){
             do{
                 json = try JSON(data: timetableData)
-                print(json)
+//                print(json)
             } catch let jsonErr {
                 print("Error serializing json:", jsonErr)
             }
