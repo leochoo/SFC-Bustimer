@@ -264,15 +264,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let busTimeText = String(DateUtils.dateToStr(dateObj:
             DateUtils.jsonToDateObj(jsonObj: bus)).suffix(5))
+        var busDetailArray: [String] = []
         
         var imageName = "normal-bus-icon"
         if(bus["type"].stringValue == "t"){
             imageName = "twin-bus-icon"
+            busDetailArray.append("ツインライナー")
         } else {
             imageName = "normal-bus-icon"
         }
         
-        var busDetailArray: [String] = []
         if(bus["rotary"].stringValue == "true" || bus["type"].stringValue == "19"){
             busDetailArray.append("ロータリー発")
         }
