@@ -208,7 +208,7 @@
         <!--About View Controller-->
         <scene sceneID="Eef-uZ-q1w">
             <objects>
-                <viewController id="oXz-pY-kLF" customClass="AboutViewController" customModule="BusTimerJSON" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="about" id="oXz-pY-kLF" customClass="AboutViewController" customModule="BusTimerJSON" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bXA-zm-3Pa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
