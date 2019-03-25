@@ -1,0 +1,26 @@
+# ios-sfcbustimer pseudocode
+
+## Assumption:
+    - 現時刻を取った時点からロジックが終わるまで1秒以上かからない。
+
+### Short version
+0. Fetch current time
+1. Figure out the departure location
+2. getNextBus
+    2.1 getSchedule
+        return schedule
+    2.2 return next bus
+3. Display the result to the user
+
+
+### Detailed version
+0. Fetch current time
+1. Figure out the departure location
+    1.1 Shonandai | Tsujido | SFC ?
+2. getNextBus
+    2.1 getSchedule
+        2.1.1 Weekday | Saturday | Holiday (Sunday) ? - 湘南台ーSFCの場合、HolidayとSundayが同じ
+        2.1.2 return today's schedule
+        2.1.3 if last bus = left, return tomorrow's schedule
+    2.2 find and return the next bus
+3. Display the result to the user
