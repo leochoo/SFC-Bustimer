@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_BusTimerJSONVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_BusTimerJSONVersionString[];
+FOUNDATION_EXPORT double Pods_SFC_BustimerVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_SFC_BustimerVersionString[];
 

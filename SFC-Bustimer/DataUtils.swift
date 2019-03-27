@@ -28,7 +28,9 @@ class DataUtils{
             UserDefaults.standard.set(data, forKey: "holidays")
             }.resume() //end of url session
     }
-    
+
+/* Test Code
+     
     class func checkData(){
         if let timetableData = UserDefaults.standard.data(forKey: "timetable"){
             do{
@@ -57,6 +59,8 @@ class DataUtils{
         UserDefaults.standard.removeObject(forKey: "timetable")
         UserDefaults.standard.removeObject(forKey: "holidays")
     }
+ 
+ */
     
     class func parseHolidaysJson() -> (JSON){
         var json = JSON()

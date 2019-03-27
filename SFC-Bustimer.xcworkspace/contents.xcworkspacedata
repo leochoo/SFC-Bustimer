@@ -2,10 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:backupMain.storyboard">
-   </FileRef>
-   <FileRef
-      location = "group:/Users/fujiitakao/Desktop/leo/ios-sfcbustimer/SFC-Bustimer.xcodeproj">
+      location = "group:SFC-Bustimer.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

@@ -242,14 +242,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         main()
     }
-    
-    @IBAction func checkData(_ sender: Any){
-        DataUtils.checkData()
-    }
-    
-    @IBAction func deleteData(_ sender: Any){
-        DataUtils.DeleteData()
-    }
+// Test Button
+//    @IBAction func checkData(_ sender: Any){
+//        DataUtils.checkData()
+//    }
+//
+//    @IBAction func deleteData(_ sender: Any){
+//        DataUtils.DeleteData()
+//    }
     
     //table view関連セクション
     //セルの個数を指定するデリゲートメソッド
