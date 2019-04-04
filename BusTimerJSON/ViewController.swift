@@ -17,6 +17,7 @@ var upcomingBuses: [JSON] = []
 
 extension TimeInterval {
     func stringFromTimeInterval() -> String {
+        // Robin: Int error check
         let time = Int(self)
         let seconds = time % 60
         let minutes = (time / 60) % 60

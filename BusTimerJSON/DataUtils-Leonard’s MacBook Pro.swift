@@ -13,7 +13,6 @@ class DataUtils{
     class func saveData(){
         // Get bus timetable
         let BusJsonUrlString = "https://api.myjson.com/bins/1brbhu" // almost final data with type 19 added.
-        // let BusJsonUrlString = "https://api.myjson.com/bins/10zfwo" // before type 2
         guard let busUrl = URL(string: BusJsonUrlString) else { return }
         URLSession.shared.dataTask(with: busUrl) { (data, response, err) in
             guard let data = data else { return }
@@ -33,7 +32,7 @@ class DataUtils{
         if let timetableData = UserDefaults.standard.data(forKey: "timetable"){
             do{
                 let json = try JSON(data: timetableData)
-//                print(json)
+                print(json)
             } catch let jsonErr {
                 print("Error serializing json:", jsonErr)
             }
@@ -59,9 +58,6 @@ class DataUtils{
     }
     
     class func parseHolidaysJson() -> (JSON){
-        // we are checking for JSON but not checking if this is the data we want
-        // use regex to see if it matches the pattern xxxx-xx-xx for the left side
-        // perhaps we can only fetch the left side data.
         var json = JSON()
         if let holidaysData = UserDefaults.standard.data(forKey: "holidays"){
             do{

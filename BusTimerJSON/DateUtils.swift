@@ -23,6 +23,7 @@ class DateUtils{
         return today //return 2019/01/05
     }
     class func getUserWeek() -> String {
+        // array key can contain anything except nil
         let arrayKeys = Array(holidaysJson.dictionaryValue.keys)
         var todayFormatted = DateUtils.getDateTime()
         todayFormatted = todayFormatted.replacingOccurrences(of: "/", with: "-", options: .literal, range: nil)
