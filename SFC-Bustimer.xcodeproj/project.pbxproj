@@ -388,8 +388,9 @@
 			baseConfigurationReference = 823184DA8F5FC8EB30E23956 /* Pods-SFC-Bustimer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YN99DPPVC8;
 				INFOPLIST_FILE = "SFc-Bustimer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -398,7 +399,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "keio.haginoken.SFC-Bustimer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "SFC Bustimer App Store";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
