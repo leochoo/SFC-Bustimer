@@ -7,6 +7,9 @@ This is a bus timer app for Keio Univeristy SFC students. The app provides
 * Time until the next bus
 * Bus schedules of SFC <-> Shonandai, Tsujido
 
+## News
+- Repository name changed from `ios-sfcbustimer` to `SFC-Bustimer` 2020/10/26
+- SFC Bustimer app taken down from App Store because of campus closure due to COVID-19. Expecting to be back sometime around FW 2020. 
 ## Latest Update
 - v1.1
     - Updated for the bus schedule change on 2019/4/8
