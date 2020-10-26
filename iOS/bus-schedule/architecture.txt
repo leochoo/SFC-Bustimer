@@ -1,0 +1,29 @@
+Safer:
+
+if header
+
+
+
+
+
+Safer:
+access URL
+download HTML files
+if structure changed:
+    notify admin
+else:
+    scrape_data()
+    if difference in schedule found:
+        export to JSON
+        update myJSON API
+
+
+Plan:
+access URL
+scrape data
+
+if difference found:
+    export to JSON
+    update myJSON API
+
+
